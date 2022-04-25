@@ -1,0 +1,35 @@
+﻿@using ToDoList.ViewModels
+@model CategoriesViewModel
+@{
+	Layout = "_Layout";	
+}
+
+
+<div class="topMenu">
+	@Html.ActionLink("Back to tasks", "Index", "ToDOList")
+</div>
+<div class="tasksWrapper">
+	<div class="currentTasks">
+		<h3>Categories</h3>
+		<div class="tasksHorizontalList">
+			@if(Model.Categories.Count > 0){
+				@foreach (var cat in Model.Categories)
+				{
+					<div class="categoryItem">
+					@cat.Name
+					@if(@cat.Id != 1){
+						@Html.ActionLink("X", "Delete", "Categories", new{categoryId = @cat.Id}, null)
+					}
+					</div>
+				}
+			}else
+				{
+				<h4>Nothing here</h4>	
+				}
+		</div>
+	</div>
+	 <form asp-action="Create" method="post">
+            <input asp-for="Name"  type="text" size="30"/>
+            <input type="submit" value="Create"/>
+    </form>	
+</div>

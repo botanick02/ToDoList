@@ -1,0 +1,70 @@
+﻿@using ToDoList.ViewModels
+@model IndexViewModel
+@{
+	Layout = "_Layout";	
+}
+
+<div class="topMenu">
+	@Html.ActionLink("Manage categories", "Index", "Categories")
+	<form asp-action="Index" method="get">
+	<select name="categoryId" id="categoryId">
+        <option value="0">All</option>
+        @foreach (var cat in Model.Categories)
+        {
+            <option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</option>
+        }
+        </select>
+		<input type="submit" value="Show"/>
+	</form>
+</div>
+<div class="tasksWrapper">
+	<div class="currentTasks">
+		<h3>Current tasks</h3>
+		<div class="tasksHorizontalList">
+			@if(Model.CurrentTasks.Count > 0){
+				@foreach (var task in Model.CurrentTasks)
+				{
+					<div class="task">
+						<div class="taskHeader">
+							<h5>@task.Title</h5>
+							<span>@task.Category</span>
+						</div>
+						<div class="taskBody">
+							<div class="taskDescription">@task.Description</div>
+							<p>Deadline - @(task.DeadlineDate.HasValue ? task.DeadlineDate : "no deadline")</p>
+							<p>Created - @task.CreatedDate</p>
+						</div>
+					</div>
+				}
+			}else
+				{
+				<h4>Nothing here</h4>	
+				}
+		</div>
+	</div>
+	<div class="completedTasks">
+		<h3>Completed tasks</h3>
+		<div class="tasksHorizontalList">
+			@if(Model.CompletedTasks.Count > 0){
+				@foreach (var task in Model.CompletedTasks)
+				{
+					<div class="task">
+						<div class="taskHeader">
+							<h5>@task.Title</h5>
+							<span>@task.Category</span>
+						</div>
+						<div class="taskBody">
+							<div class="taskDescription">@task.Description</div>
+							<p>Was completed - @task.DeadlineDate</p>
+							<p>Created - @task.CreatedDate</p>
+						</div>
+					</div>
+				}
+			}else
+				{
+				<h4>Nothing here</h4>	
+				}
+		</div>
+	</div>
+</div>
+
