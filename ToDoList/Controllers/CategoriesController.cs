@@ -28,14 +28,14 @@ namespace ToDoList.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-		public ActionResult Create()
+        public ActionResult Create(string name)
         {
-            Debug.WriteLine("here");
+            Debug.WriteLine($"CreateController - {name}");
 
             if (ModelState.IsValid)
             {
                 CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
-                //bool res = categoryDbHandle.Create(Name);
+                bool res = categoryDbHandle.Create(name);
             }
             return RedirectToAction("Index");
         }

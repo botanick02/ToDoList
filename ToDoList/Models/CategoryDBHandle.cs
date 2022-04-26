@@ -68,9 +68,10 @@ namespace ToDoList.Models
 			int res = 0;
 			using (var sqlConnection = _connection)
 			{
-				string sqlQuery = $"INSERT INTO Categories VALUES('@name')";
+				string sqlQuery = $"INSERT INTO Categories VALUES(@name)";
 
 				SqlCommand command = new SqlCommand(sqlQuery, sqlConnection);
+				SqlParameter param = new SqlParameter();
 				command.Parameters.AddWithValue("@name", name);
 				try
 				{

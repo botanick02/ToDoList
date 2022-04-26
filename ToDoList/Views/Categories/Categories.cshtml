@@ -1,5 +1,4 @@
-﻿@using ToDoList.ViewModels
-@model CategoriesViewModel
+﻿@model ToDoList.ViewModels.CategoriesViewModel; 
 @{
 	Layout = "_Layout";	
 }
@@ -28,8 +27,10 @@
 				}
 		</div>
 	</div>
-	 <form asp-action="Create" method="post">
-            <input asp-for="Name"  type="text" size="30"/>
-            <input type="submit" value="Create"/>
-    </form>	
+	
 </div>
+
+ <form action="/Categories/Create" method="post">
+            <input asp-for="name" name="name" type="text" size="30"/>
+            <input type="submit" value="click" />
+    </form>	
