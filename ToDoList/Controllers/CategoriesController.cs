@@ -7,35 +7,34 @@ namespace ToDoList.Controllers
 {
     public class CategoriesController : Controller
     {
-        private IConfiguration _configuration;
-        public CategoriesController(IConfiguration configuration)
+        private IToDoTaskRepository _taskRepository;
+        private ICategoryRepository _categoryRepository;
+        public CategoriesController(IToDoTaskRepository taskRep, ICategoryRepository catRep)
         {
-            _configuration = configuration;
+            _taskRepository = taskRep;
+            _categoryRepository = catRep;
         }
+        [HttpGet]
         public ViewResult Index()
         {
-            CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
             CategoriesViewModel viewModel = new CategoriesViewModel();
-            viewModel.Categories = categoryDbHandle.ListCategories();
+            viewModel.Categories = _categoryRepository.GetAllCategories();
 
             return View("Categories", viewModel);
         }
         [HttpGet]
         public ActionResult Delete(int categoryId)
         {
-            CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
-            bool res = categoryDbHandle.Delete(categoryId);
+            bool res = _categoryRepository.Delete(categoryId);
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public ActionResult Create(string name)
-        {
-            Debug.WriteLine($"CreateController - {name}");
 
+        [HttpPost]
+        public ActionResult Create(CategoryCreateViewModel category)
+        {
             if (ModelState.IsValid)
             {
-                CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
-                bool res = categoryDbHandle.Create(name);
+                bool res = _categoryRepository.Create(category.Name);
             }
             return RedirectToAction("Index");
         }

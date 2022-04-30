@@ -4,6 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<IToDoTaskRepository , ToDoTaskDBRepository>();
+builder.Services.AddTransient<ICategoryRepository , CategoryDBRepository>();
 
 var app = builder.Build();
 

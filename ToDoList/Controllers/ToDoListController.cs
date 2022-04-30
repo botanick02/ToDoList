@@ -2,35 +2,48 @@
 using System.Diagnostics;
 using ToDoList.Models;
 using ToDoList.ViewModels;
+using ToDoList.ViewModels.Task;
+
 
 namespace ToDoList.Controllers
 {
     public class ToDoListController : Controller
     {
-        private IConfiguration _configuration;
-        public ToDoListController(IConfiguration configuration)
+        private IToDoTaskRepository _taskRepository;
+        private ICategoryRepository _categoryRepository;
+        public ToDoListController(IToDoTaskRepository taskRep, ICategoryRepository catRep)
         {
-            _configuration = configuration;
+            _taskRepository = taskRep;
+            _categoryRepository = catRep;
         }
 
         [HttpGet]
         public ViewResult Index(int categoryId)
         {
-            ToDoTaskDBHandle taskDbHandle = new ToDoTaskDBHandle(_configuration);
-            CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
             IndexViewModel viewModel = new IndexViewModel();
-            viewModel.CurrentTasks = taskDbHandle.ListItems(isDone: false, categoryId: categoryId);
-            viewModel.CompletedTasks = taskDbHandle.ListItems(isDone: true, categoryId: categoryId);
-            viewModel.Categories = categoryDbHandle.ListCategories();
+            viewModel.CurrentTasks = _taskRepository.ListItems(isDone: false, categoryId: categoryId);
+            viewModel.CompletedTasks = _taskRepository.ListItems(isDone: true, categoryId: categoryId);
+            viewModel.Categories = _categoryRepository.GetAllCategories();
             viewModel.CurrentCategory = categoryId;
             return View("Index", viewModel);
 		}
-        public ViewResult Categories()
+        //public ViewResult Categories()
+        //{
+        //    CategoriesViewModel viewModel = new CategoriesViewModel();
+        //    viewModel.Categories = _categoryRepository.GetAllCategories();
+        //    return View("Categories", viewModel);
+        //}
+        [HttpPost]
+        public IActionResult Create(ToDoTaskCreateViewModel taskCreate)
         {
-            CategoryDBHandle categoryDbHandle = new CategoryDBHandle(_configuration);
-            CategoriesViewModel viewModel = new CategoriesViewModel();
-            viewModel.Categories = categoryDbHandle.ListCategories();
-            return View("Categories", viewModel);
+
+            if (ModelState.IsValid)
+            {
+                bool res = _taskRepository.Create(taskCreate);
+                Debug.WriteLine("category = " + taskCreate.CategoryId);
+
+            }
+            return RedirectToAction("Index");
         }
     }
 }
