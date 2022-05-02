@@ -1,9 +1,8 @@
-﻿namespace ToDoList.Models
+﻿namespace ToDoList.ViewModels
 {
-    public class ToDoTaskModel
+    public class ToDoTaskViewModel
     {
         public int Id { get; set; }
-        public int CategoryId { get; set; }
         public string Category { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? DeadlineDate { get; set; }

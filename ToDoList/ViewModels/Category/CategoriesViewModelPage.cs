@@ -2,7 +2,7 @@
 
 namespace ToDoList.ViewModels
 {
-    public class CategoriesViewModel
+    public class CategoriesViewModelPage
     {
         public List<CategoryModel> Categories { get; set; }
     }

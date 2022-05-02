@@ -1,31 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using ToDoList.Models;
 using ToDoList.ViewModels;
+using AutoMapper;
 
 namespace ToDoList.Controllers
 {
     public class CategoriesController : Controller
     {
-        private IToDoTaskRepository _taskRepository;
-        private ICategoryRepository _categoryRepository;
-        public CategoriesController(IToDoTaskRepository taskRep, ICategoryRepository catRep)
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper; 
+        public CategoriesController(ICategoryRepository catRep, IMapper mapper)
         {
-            _taskRepository = taskRep;
             _categoryRepository = catRep;
+            _mapper = mapper;
         }
         [HttpGet]
         public ViewResult Index()
         {
-            CategoriesViewModel viewModel = new CategoriesViewModel();
+            CategoriesViewModelPage viewModel = new CategoriesViewModelPage();
             viewModel.Categories = _categoryRepository.GetAllCategories();
 
             return View("Categories", viewModel);
         }
-        [HttpGet]
-        public ActionResult Delete(int categoryId)
+        [HttpPost]
+        public ActionResult Delete(CategoryDeleteViewModel category)
         {
-            bool res = _categoryRepository.Delete(categoryId);
+            if (ModelState.IsValid)
+            {
+                var categoryModel = _mapper.Map<CategoryModel>(category);
+                bool res = _categoryRepository.Delete(categoryModel);
+            }
             return RedirectToAction("Index");
         }
 
@@ -34,10 +38,36 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool res = _categoryRepository.Create(category.Name);
+                var categoryModel = _mapper.Map<CategoryModel>(category);
+                bool res = _categoryRepository.Create(categoryModel);
             }
             return RedirectToAction("Index");
         }
+        public IActionResult Edit(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var categoryModel = _categoryRepository.GetCategory(id);
+                var viewModdelPage = _mapper.Map<CategoryViewModel>(categoryModel);
+                return View("Edit", viewModdelPage);
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult Update(CategoryViewModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                var categoryModel = _mapper.Map<CategoryModel>(category);
+                var res = _categoryRepository.Update(categoryModel);
+                if (res)
+                {
+                    return RedirectToAction("Index");
+                }
+                return RedirectToAction("Edit", category);
 
+            }
+            return RedirectToAction("Edit", category);
+        }
     }
 }

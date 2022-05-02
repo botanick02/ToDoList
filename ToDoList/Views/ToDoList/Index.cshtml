@@ -1,5 +1,5 @@
 ﻿@using ToDoList.ViewModels
-@model IndexViewModel
+@model ToDoTaskViewModelPage
 @{
 	Layout = "_Layout";	
 	ViewBag.Title = "Tasks - ToDoList";
@@ -7,15 +7,27 @@
 <div class="AddTask">
 	<h3>Add task:</h3>
 	<form action="ToDoList/Create" method="post">
-		<input type="text" asp-for="Title" name="Title" required />
-		<textarea asp-for="Description" name="Description" rows="5" cols="50"></textarea>
-		<select asp-for="CategoryId" name="CategoryId">
+		<div>
+			<p>Title</p>
+			<input type="text" asp-for="Title" name="Title" required />
+		</div>
+		<div>
+			<p>Description (optional)</p>
+			<textarea asp-for="Description" name="Description" rows="5" cols="50"></textarea>
+		</div>
+		<div>
+			<p>Category</p>
+			<select asp-for="CategoryId" name="CategoryId">
 			@foreach (var cat in Model.Categories)
 			{
 				<option value="@cat.Id">@cat.Name</option>
 			}
 		</select>
-		<input type="date" asp-for="DeadlineDate" name="DeadlineDate"/>
+		</div>
+		<div>
+			<p>Deadline (empty - no deadline)</p>
+			<input type="datetime-local" asp-for="DeadlineDate" name="DeadlineDate"/>
+		</div>
         <input type="submit" value="create" />
 	</form>
 </div>
@@ -43,6 +55,11 @@
 						<div class="taskHeader">
 							<h5>@task.Title</h5>
 							<span>@task.Category</span>
+							<div class="control">
+								<form action="ToDoList/Edit" method="post"><button type="submit" name="Id" value="@task.Id">Edit</button></form>
+								<form action="ToDoList/MarkAsDone" method="post"><button type="submit" name="Id" value="@task.Id">Mark as done</button></form>
+								<form action="ToDoList/Delete" method="post"><button type="submit" name="Id" value="@task.Id">X</button></form>
+							</div>
 						</div>
 						<div class="taskBody">
 							<div class="taskDescription">@task.Description</div>
@@ -67,10 +84,15 @@
 						<div class="taskHeader">
 							<h5>@task.Title</h5>
 							<span>@task.Category</span>
+							<div class="control">
+								<form action="ToDoList/Edit" method="post"><button type="submit" name="Id" value="@task.Id">Edit</button></form>
+								<form action="ToDoList/MarkAsNotDone" method="post"><button type="submit" name="Id" value="@task.Id">Mark as NOT done</button></form>
+								<form action="ToDoList/Delete" method="post"><button type="submit" name="Id" value="@task.Id">X</button></form>
+							</div>
 						</div>
 						<div class="taskBody">
 							<div class="taskDescription">@task.Description</div>
-							<p>Was completed - @task.DeadlineDate</p>
+							<p>Was completed - @task.DoneDate</p>
 							<p>Created - @task.CreatedDate</p>
 						</div>
 					</div>

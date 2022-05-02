@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Diagnostics;
+﻿using System.Data.SqlClient;
 using Dapper;
-using ToDoList.ViewModels.Task;
 
 namespace ToDoList.Models
 {
-	public class ToDoTaskDBRepository : IToDoTaskRepository
+    public class ToDoTaskDBRepository : IToDoTaskRepository
 	{
 		private string _connectionString;
+
 		public ToDoTaskDBRepository(IConfiguration configuration)
 		{
 			_connectionString = configuration["Data:ToDoItems:ConnectionString"];
@@ -45,7 +40,7 @@ namespace ToDoList.Models
 					}
 				}
 
-				string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Categories.Name AS Category, " +
+				string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
 					"Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
 					"Tasks.DoneDate, Tasks.Description FROM Tasks " +
 					"INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " + sqlWhere;
@@ -54,17 +49,65 @@ namespace ToDoList.Models
 			}
 		}
 
-		public bool Create(ToDoTaskCreateViewModel taskCreate)
+		public bool Create(ToDoTaskModel task)
 		{
 			int affectedRows = 0;
 			using (var conn = new SqlConnection(_connectionString))
 			{
-				var parameters = new { Title = taskCreate.Title, Description = taskCreate.Description,
-					CategoryId = taskCreate.CategoryId, DeadlineDate = taskCreate.DeadlineDate };
-				string sqlQuery = $"INSERT INTO Tasks (Title, Description, CreatedDate, DeadlineDate) VALUES(@Title, @Description, '{DateTime.Now}', @DeadlineDate)";
+				var parameters = new { Title = task.Title, Description = task.Description,
+					CategoryId = task.CategoryId, DeadlineDate = task.DeadlineDate };
+				string sqlQuery = $"INSERT INTO Tasks (Title, Description, CategoryId, CreatedDate, DeadlineDate) VALUES(@Title, @Description, @CategoryId,  '{DateTime.Now}', @DeadlineDate)";
 				affectedRows = conn.Execute(sqlQuery, parameters);
 			}
 			return affectedRows > 0;
 		}
-	}
+
+        public bool Delete(int id)
+        {
+			var affectedRows = 0;
+			using (var conn = new SqlConnection(_connectionString))
+			{
+				var parameters = new { Id = id };
+				string sqlQuery = $"DELETE FROM Tasks WHERE Id = @Id";
+				affectedRows = conn.Execute(sqlQuery, parameters);
+			}
+			return affectedRows > 0;
+		}
+
+        public bool SetDoneStatus(int id, bool status)
+        {
+			var affectedRows = 0;
+			using (var conn = new SqlConnection(_connectionString))
+			{
+				var parameters = new { Id = id, Status = status };
+				string sqlQuery = $"UPDATE Tasks SET IsDone = @Status, DoneDate = '{DateTime.Now}' WHERE Id = @Id";
+				affectedRows = conn.Execute(sqlQuery, parameters);
+			}
+			return affectedRows > 0;
+		}
+
+        public ToDoTaskModel GetTask(int id)
+        {
+			using (var conn = new SqlConnection(_connectionString))
+			{
+				var parameters = new { Id = id };
+				string sqlQuery = "SELECT * FROM Tasks WHERE Id = @Id";
+				ToDoTaskModel res = conn.QueryFirst<ToDoTaskModel>(sqlQuery, parameters);
+				return res;
+			}
+		}
+        public bool Update(ToDoTaskModel task)
+        {
+			var affectedRows = 0;
+			using (var conn = new SqlConnection(_connectionString))
+			{
+				var parameters = new { Id = task.Id, Title = task.Title, Description = task.Description,
+					DeadlineDate = task.DeadlineDate, CategoryId = task.CategoryId };
+				string sqlQuery = "UPDATE Tasks SET Title = @Title, Description = @Description, CategoryId = @CategoryId," +
+                    " DeadlineDate = @DeadlineDate WHERE Id = @Id";
+				affectedRows = conn.Execute(sqlQuery, parameters);
+			}
+			return affectedRows > 0;
+		}
+    }
 }

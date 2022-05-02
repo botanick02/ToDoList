@@ -1,11 +1,18 @@
+using AutoMapper;
+using ToDoList;
 using ToDoList.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IToDoTaskRepository , ToDoTaskDBRepository>();
-builder.Services.AddTransient<ICategoryRepository , CategoryDBRepository>();
+builder.Services.AddTransient<IToDoTaskRepository, ToDoTaskDBRepository>();
+builder.Services.AddTransient<ICategoryRepository, CategoryDBRepository>();
+
+var config = AutoMapperConfig.Configure();
+IMapper mapper = config.CreateMapper();
+builder.Services.AddSingleton<IMapper>(mapper);
+
 
 var app = builder.Build();
 

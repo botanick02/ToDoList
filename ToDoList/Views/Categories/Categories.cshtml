@@ -1,4 +1,4 @@
-﻿@model ToDoList.ViewModels.CategoriesViewModel; 
+﻿@model ToDoList.ViewModels.CategoriesViewModelPage; 
 @{
 	Layout = "_Layout";	
 	ViewBag.Title = "Categories - ToDoList";
@@ -18,7 +18,8 @@
 					<div class="categoryItem">
 					@cat.Name
 					@if(@cat.Id != 1){
-						@Html.ActionLink("X", "Delete", "Categories", new{categoryId = @cat.Id}, null)
+						<form action="/Categories/Edit" method="post"><button type="submit" name="Id" value="@cat.Id">Edit</button></form>
+						<form action="/Categories/Delete" method="post"><button type="submit" name="Id" value="@cat.Id">X</button></form>
 					}
 					</div>
 				}
