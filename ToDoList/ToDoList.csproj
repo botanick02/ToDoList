@@ -13,4 +13,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\MicrosoftSqlDB\MicrosoftSqlDB.csproj" />
+  </ItemGroup>
+
 </Project>

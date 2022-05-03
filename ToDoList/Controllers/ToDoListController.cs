@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ToDoList.Models;
 using ToDoList.ViewModels;
 
 
@@ -103,7 +103,7 @@ namespace ToDoList.Controllers
                 return RedirectToAction("Edit", task);
 
             }
-                return RedirectToAction("Edit", task);
+            return RedirectToAction("Edit", task);
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ToDoList.Models;
 using ToDoList.ViewModels;
 using AutoMapper;
+using Business.Models;
 
 namespace ToDoList.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper; 
+        private readonly IMapper _mapper;
         public CategoriesController(ICategoryRepository catRep, IMapper mapper)
         {
             _categoryRepository = catRep;
@@ -18,7 +18,8 @@ namespace ToDoList.Controllers
         public ViewResult Index()
         {
             CategoriesViewModelPage viewModel = new CategoriesViewModelPage();
-            viewModel.Categories = _categoryRepository.GetAllCategories();
+            var categories = _categoryRepository.GetAllCategories();
+            viewModel.Categories = _mapper.Map<List<CategoryViewModel>>(categories);
 
             return View("Categories", viewModel);
         }

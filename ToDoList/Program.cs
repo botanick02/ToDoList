@@ -1,6 +1,7 @@
 using AutoMapper;
+using Business.Models;
+using MicrosoftSqlDB.Models;
 using ToDoList;
-using ToDoList.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

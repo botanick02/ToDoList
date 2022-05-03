@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Business.Models;
 using ToDoList.ViewModels;
-using ToDoList.Models;
 
 namespace ToDoList
 {

@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Models
+﻿using System;
+
+namespace Business.Models
 {
     public class ToDoTaskModel
     {

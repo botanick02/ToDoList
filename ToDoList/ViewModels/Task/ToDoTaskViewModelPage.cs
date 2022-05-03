@@ -1,5 +1,4 @@
-﻿using ToDoList.Models;
-using ToDoList.ViewModels;
+﻿using ToDoList.ViewModels;
 
 namespace ToDoList.ViewModels
 {

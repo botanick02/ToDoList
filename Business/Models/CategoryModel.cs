@@ -1,4 +1,4 @@
-﻿namespace ToDoList.Models
+﻿namespace Business.Models
 {
     public class CategoryModel
     {

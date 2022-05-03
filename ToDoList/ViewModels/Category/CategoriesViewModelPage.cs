@@ -1,9 +1,7 @@
-﻿using ToDoList.Models;
-
-namespace ToDoList.ViewModels
+﻿namespace ToDoList.ViewModels
 {
     public class CategoriesViewModelPage
     {
-        public List<CategoryModel> Categories { get; set; }
+        public List<CategoryViewModel> Categories { get; set; }
     }
 }
