@@ -48,7 +48,7 @@ namespace MicrosoftSqlDB.Models
 
                 string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
-                    "Tasks.DoneDate, Tasks.Description FROM Tasks " +
+                    "Tasks.DoneDate FROM Tasks " +
                     "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " + sqlWhere;
                 var tasksList = conn.Query<ToDoTaskModel>(sqlQuery, parameters).ToList();
                 return tasksList;
@@ -63,11 +63,10 @@ namespace MicrosoftSqlDB.Models
                 var parameters = new
                 {
                     Title = task.Title,
-                    Description = task.Description,
                     CategoryId = task.CategoryId,
                     DeadlineDate = task.DeadlineDate
                 };
-                string sqlQuery = $"INSERT INTO Tasks (Title, Description, CategoryId, CreatedDate, DeadlineDate) VALUES(@Title, @Description, @CategoryId,  '{DateTime.Now}', @DeadlineDate)";
+                string sqlQuery = $"INSERT INTO Tasks (Title, CategoryId, CreatedDate, DeadlineDate) VALUES(@Title, @CategoryId,  '{DateTime.Now}', @DeadlineDate)";
                 affectedRows = conn.Execute(sqlQuery, parameters);
             }
             return affectedRows > 0;
@@ -116,11 +115,10 @@ namespace MicrosoftSqlDB.Models
                 {
                     Id = task.Id,
                     Title = task.Title,
-                    Description = task.Description,
                     DeadlineDate = task.DeadlineDate,
                     CategoryId = task.CategoryId
                 };
-                string sqlQuery = "UPDATE Tasks SET Title = @Title, Description = @Description, CategoryId = @CategoryId," +
+                string sqlQuery = "UPDATE Tasks SET Title = @Title, CategoryId = @CategoryId," +
                     " DeadlineDate = @DeadlineDate WHERE Id = @Id";
                 affectedRows = conn.Execute(sqlQuery, parameters);
             }

@@ -1,107 +1,128 @@
 ﻿@using ToDoList.ViewModels
 @model ToDoTaskViewModelPage
 @{
-	Layout = "_Layout";	
+	Layout = "_Layout";
 	ViewBag.Title = "Tasks - ToDoList";
 }
-<div class="AddTask">
+<div class="addTask">
 	<h3>Add task:</h3>
 	<form action="ToDoList/Create" method="post">
 		<div>
 			<p>Title</p>
-			<input type="text" asp-for="Title" name="Title" required size="50"/>
-		</div>
-		<div>
-			<p>Description (optional)</p>
-			<textarea asp-for="Description" name="Description" rows="5" cols="50"></textarea>
+			<input type="text" asp-for="Title" name="Title" required size="50" />
 		</div>
 		<div>
 			<p>Category</p>
 			<select asp-for="CategoryId" name="CategoryId">
-			@foreach (var cat in Model.Categories)
-			{
-				<option value="@cat.Id">@cat.Name</option>
-			}
-		</select>
+				@foreach (var cat in Model.Categories)
+				{
+					<option value="@cat.Id">@cat.Name</option>
+				}
+			</select>
 		</div>
 		<div>
 			<p>Deadline (empty - no deadline)</p>
-			<input type="datetime-local" asp-for="DeadlineDate" name="DeadlineDate"/>
+			<input type="datetime-local" asp-for="DeadlineDate" name="DeadlineDate" />
 		</div>
-        <input type="submit" value="create" />
+		<input type="submit" value="Create" />
 	</form>
 </div>
-<div class="topMenu">
-	@Html.ActionLink("Manage categories", "Index", "Categories")
+<div class="categoryFilter">
 	<form asp-action="Index" method="get">
-	<select name="categoryId" id="categoryId">
-        <option value="0">All</option>
-        @foreach (var cat in Model.Categories)
-        {
-            <option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</option>
-        }
-        </select>
-		<input type="submit" value="Show"/>
+		<select name="categoryId" id="categoryId">
+			<option value="0">All</option>
+			@foreach (var cat in Model.Categories)
+			{
+				<option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</option>
+			}
+		</select>
+		<input type="submit" value="Show" />
 	</form>
 </div>
 <div class="tasksWrapper">
 	<div class="currentTasks">
-		<h3>Current tasks</h3>
-		<div class="tasksHorizontalList">
-			@if(Model.CurrentTasks.Count > 0){
+		<h3>Current</h3>
+		<table>
+			<tr>
+				<th>Task</th>
+				<th>Category</th>
+				<th>Deadline</th>
+				<th>Date of creation</th>
+				<th></th>
+			</tr>
+
+			@if (Model.CurrentTasks.Count > 0)
+			{
 				@foreach (var task in Model.CurrentTasks)
 				{
-					<div class="task">
-						<div class="taskHeader">
-							<h5>@task.Title</h5>
-							<span>@task.Category</span>
-							<div class="control">
-								<form action="ToDoList/Edit" method="post"><button type="submit" name="Id" value="@task.Id">Edit</button></form>
-								<form action="ToDoList/MarkAsDone" method="post"><button type="submit" name="Id" value="@task.Id">Mark as done</button></form>
-								<form action="ToDoList/Delete" method="post"><button type="submit" name="Id" value="@task.Id">X</button></form>
+					<tr class="task">
+						<td class="taskName">@task.Title</td>
+						<td>@(task.Category != "Uncategorized" ? task.Category : "")</td>
+						<td>
+							@if (task.DeadlineDate.HasValue)
+							{
+								@task.DeadlineDate;
+								if(task.DeadlineDate > DateTime.Now)
+								{
+									<span class="active">Active</span>
+								}else{
+									<span class="expired">Expired</span>
+								}
+							}
+						</td>
+						<td>@task.CreatedDate</td>
+						<td>
+							<div class="taskControl">
+								<form action="/ToDoList/MarkAsDone" method="post"><button class="setDoneButt" type="submit" name="Id" value="@task.Id">Complete✔</button></form>
+								<form action="/ToDoList/Edit" method="post"><button class="editButt" type="submit" name="Id" value="@task.Id">Edit</button></form>
+								<form action="/ToDoList/Delete" method="post"><button class="deleteButt" type="submit" name="Id" value="@task.Id">❌</button></form>
 							</div>
-						</div>
-						<div class="taskBody">
-							<div class="taskDescription">@task.Description</div>
-							<p>Deadline - @(task.DeadlineDate.HasValue ? task.DeadlineDate : "no deadline")</p>
-							<p>Created - @task.CreatedDate</p>
-						</div>
-					</div>
+						</td>
+					</tr>
 				}
-			}else
-				{
-				<h4>Nothing here</h4>	
-				}
-		</div>
+			}
+			else
+			{
+				<tr><td colspan="4">Nothing here</td></tr>
+			}
+		</table>
 	</div>
 	<div class="completedTasks">
-		<h3>Completed tasks</h3>
-		<div class="tasksHorizontalList">
-			@if(Model.CompletedTasks.Count > 0){
+		<h3>Completed</h3>
+		<table>
+			<tr>
+				<th>Task</th>
+				<th>Category</th>
+				<th>Date of completion</th>
+				<th>Date of creation</th>
+				<th></th>
+			</tr>
+
+			@if (Model.CompletedTasks.Count > 0)
+			{
 				@foreach (var task in Model.CompletedTasks)
 				{
-					<div class="task">
-						<div class="taskHeader">
-							<h5>@task.Title</h5>
-							<span>@task.Category</span>
-							<div class="control">
-								<form action="ToDoList/Edit" method="post"><button type="submit" name="Id" value="@task.Id">Edit</button></form>
-								<form action="ToDoList/MarkAsNotDone" method="post"><button type="submit" name="Id" value="@task.Id">Mark as NOT done</button></form>
-								<form action="ToDoList/Delete" method="post"><button type="submit" name="Id" value="@task.Id">X</button></form>
+					<tr class="task">
+						<td class="taskName">@task.Title</td>
+						<td>@(task.Category != "Uncategorized" ? task.Category : "")</td>
+						<td>
+							@task.DoneDate
+						</td>
+						<td>@task.CreatedDate</td>
+						<td>
+							<div class="taskControl">
+								<form action="/ToDoList/MarkAsNotDone" method="post"><button class="setNotDoneButt" type="submit" name="Id" value="@task.Id">Incomplete⮌</button></form>
+								<form action="/ToDoList/Edit" method="post"><button class="editButt" type="submit" name="Id" value="@task.Id">Edit</button></form>
+								<form action="/ToDoList/Delete" method="post"><button class="deleteButt" type="submit" name="Id" value="@task.Id">❌</button></form>
 							</div>
-						</div>
-						<div class="taskBody">
-							<div class="taskDescription">@task.Description</div>
-							<p>Was completed - @task.DoneDate</p>
-							<p>Created - @task.CreatedDate</p>
-						</div>
-					</div>
+						</td>
+					</tr>
 				}
-			}else
-				{
-				<h4>Nothing here</h4>	
-				}
-		</div>
+			}
+			else
+			{
+				<tr><td colspan="4">Nothing here</td></tr>
+			}
+		</table>
 	</div>
 </div>
-

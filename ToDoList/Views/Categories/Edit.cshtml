@@ -5,7 +5,7 @@
 }
 
 <h3>Edit category</h3>
- <form action="/Categories/Update" method="post">
+ <form action="/Categories/Update" method="post" class="categoryAdd">
             <input asp-for="name" name="name" value="@Model.Name" type="text" size="30" required/>
             <button type="submit" name="Id" value="@Model.Id">Save</button>
     </form>

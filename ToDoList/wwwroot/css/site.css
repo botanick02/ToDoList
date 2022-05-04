@@ -1,147 +1,385 @@
-*{
-    margin:0;
-    padding:0;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
-.container{
+.container {
     padding: 20px;
 }
+
 h3 {
     font-family: 'Ubuntu', sans-serif;
-
+    margin: 10px 0;
 }
+
 h4 {
     font-family: 'Ubuntu', sans-serif;
     color: #069A8E;
 }
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
-.container{
+
+.container {
     width: 100%;
 }
 
-.currentTasks, .completedTasks {
+header {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #345B63;
+    color: #fff;
+    padding: 5px 30px;
+    height: 70px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.navTop {
+    display: flex;
+    margin-left: 50px;
+}
+
+    .navTop li {
+        list-style: none;
+    }
+
+        .navTop li a {
+            color: #fff;
+            padding: 5px;
+            border-bottom: 2px solid rgba(255,255,255,0);
+            transition: 0.2s
+        }
+
+            .navTop li a:hover {
+                color: #fff;
+                padding: 5px;
+                border-bottom: 2px solid rgba(255,255,255,0.7);
+                transition: 0.2s
+            }
+
+header a.logo {
+    font-size: 1.6vw;
+    color: #fff;
+    transition: 0.2s
+}
+
+    header a.logo:hover {
+        color: #B6D6E7;
+        transition: 0.2s
+    }
+
+.currentTasks, .completedTasks {
+    width: 85%;
     padding: 20px 50px;
 }
 
-.tasksHorizontalList{
+.tdFlex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.taskControl {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tasksWrapper table {
+    font-family: 'Ubuntu', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .tasksWrapper table th {
+        padding: 10px 0 10px 8px;
+        text-align: left;
+        background-color: #345B63;
+        color: white;
+    }
+
+    .tasksWrapper table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        font-size: 0.95vw;
+        color: #345B63;
+        text-align: center;
+    }
+
+    .tasksWrapper table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .tasksWrapper table tr:hover {
+        background-color: #ddd;
+    }
+
+.horizontalList {
     width: 100%;
     display: flex;
     overflow-x: scroll;
     flex-wrap: nowrap;
     padding: 20px;
 }
+
 .task {
-    margin: 10px 20px;
-    border: 4px solid #A1E3D8;
-    border-radius: 20px;
-    overflow: hidden;
     font-family: 'Ubuntu', sans-serif;
-    min-width: 300px;
-    max-width: 400px;
 }
-.task .control{
-    display: flex;
-    float: right;
-}
-.task .control *{
-    margin: 0 2px;
-}
-.categoryItem {
-    margin: 10px 20px;
+
+    .task .control {
+        display: flex;
+        float: right;
+    }
+
+        .task .control * {
+            margin: 0 2px;
+        }
+
+.categoryAdd * {
     padding: 10px;
-    border: 4px solid #A1E3D8;
-    border-radius: 20px;
-    overflow: hidden;
-    font-family: 'Ubuntu', sans-serif;
-    min-width: 100px;
-    max-width: 400px;
+    font-size: 1.1vw;
+}
+
+    .categoryAdd *[type="submit"] {
+        background-color: #fff;
+        font-size: 1.1vw;
+    }
+
+        .categoryAdd *[type="submit"]:hover {
+            background-color: #B6D6E7;
+        }
+        .categoryAdd *[type="submit"]:focus {
+            background-color: #345B63;
+            color: #B6D6E7;
+        }
+
+.categoryItem {
+    margin: 0 20px;
     display: flex;
-    justify-content:center;
+    border: 2px solid #345B63;
+    padding: 10px;
+    align-items: center;
 }
-.categoryItem *{
-    margin: 0 5px;
-}
+
+    .categoryItem button {
+        margin: 0;
+    }
+
+    .categoryItem p {
+        font-size: 1vw;
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+    .categoryItem * {
+        margin: 0 5px;
+    }
+
 .taskHeader {
     padding: 10px;
     border-bottom: 2px solid #A1E3D8;
 }
-.taskHeader h5 {
-    color: #005555;
-    font-size: 20px;
-}
-.taskHeader span {
-    color: #069A8E;
-    font-size: 15px;
-}
-.taskBody{
+
+    .taskHeader h5 {
+        color: #005555;
+        font-size: 20px;
+    }
+
+    .taskHeader span {
+        color: #069A8E;
+        font-size: 15px;
+    }
+
+.taskBody {
     padding: 10px;
 }
+
 .taskDescription {
     margin: 10px 5px;
     color: #005555;
 }
-.topMenu form{
+
+.categoryFilter form {
     margin: 20px 0 0 0;
 }
-.topMenu {
-    margin: 10px 50px;
+
+.categoryFilter {
+    margin: 20px 50px;
     font-family: 'Ubuntu', sans-serif;
+    display: flex;
 }
-.topMenu a {
-    color: #069A8E;
-    font-size: 20px;
-    padding: 10px;
-    border: 2px solid #A1E3D8;
-    border-radius: 20px;
-    margin: 0 20px 0 0;
-}
-.topMenu a:hover {
-    background-color: #1BE0D0;
-    color: #005555;
-    transition: 0.2s;
-}
-.topMenu a:active {
-    background-color: #ffffff;
-    color: #005555;
-}
-.categoryItem a{
+
+    .categoryFilter select {
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .categoryFilter input[type="submit"] {
+        color: #152D35;
+        font-size: 1.1vw;
+        background-color: #fff;
+        border: 1px solid #152D35;
+        height: 100%;
+        padding: 0 10px;
+    }
+
+        .categoryFilter input[type="submit"]:hover {
+            background-color: #B6D6E7;
+        }
+
+.categoryItem a {
     color: red;
 }
-.AddTask{
+
+.addTask {
     width: 100%;
     text-align: center;
+    font-family: 'Ubuntu', sans-serif;
 }
-.AddTask form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+    .addTask form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .addTask select {
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .addTask form input {
+        padding: 10px;
+        border: 1px solid #345B63;
+    }
+
+    .addTask form p {
+        margin-bottom: 5px;
+    }
+
+    .addTask form *[type="submit"] {
+        background-color: #345B63;
+        color: #fff;
+        font-size: 1.2vw;
+        padding: 10px 20px;
+        font-family: 'Ubuntu', sans-serif;
+        cursor: pointer;
+    }
+
+        .addTask form *[type="submit"]:hover {
+            background-color: #152D35;
+        }
+
+        .addTask form *[type="submit"]:focus {
+            background-color: #D4ECDD;
+            color: #152D35;
+        }
+
+    .addTask form div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+.active, .expired {
+    float: right;
+    padding: 5px;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 10px;
 }
-.AddTask form div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px 0;
+
+.active {
+    background-color: #6EC247;
+}
+
+.expired {
+    background-color: #C14644;
+}
+
+.deleteButt {
+    color: #C14644;
+    border: none;
+    font-size: 1.5vw;
+    cursor: pointer;
+    margin-left: 40px;
+    background-color: inherit;
+}
+
+.setDoneButt {
+    color: #2C6F25;
+    background-color: inherit;
+    border: 1px solid #2C6F25;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0 10px;
+    height: 2.3vw;
+    font-size: 1.1vw;
+}
+
+    .setDoneButt:hover {
+        background-color: #AFE4B0;
+        transition: 0.2s;
+    }
+
+.setNotDoneButt {
+    color: #C14644;
+    background-color: inherit;
+    border: 1px solid #C14644;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0 10px;
+    height: 2.3vw;
+    font-size: 1.1vw;
+}
+
+    .setNotDoneButt:hover {
+        background-color: #E3AEAB;
+        transition: 0.2s;
+    }
+
+
+
+.editButt {
+    color: #86642D;
+    background-color: inherit;
+    border: 1px solid #86642D;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0 10px;
+    height: 2.3vw;
+    font-size: 1.1vw;
+    margin-left: 10px;
+}
+
+    .editButt:hover {
+        background-color: #DFD39F;
+    }
+
+.tasksWrapper table .taskName {
+    color: black;
+    font-size: 1.15vw;
+    text-align: left;
+    width: 30%;
 }
