@@ -1,32 +1,32 @@
-﻿@using ToDoList.ViewModels
-@model ToDoTaskEditViewModelPage
+﻿@model ToDoList.ViewModels.ToDoTaskEditViewModelPage
 @{
-	Layout = "_Layout";	
+	Layout = "_Layout";
 	ViewBag.Title = "Edit task - ToDoList";
 	var deadlineDate = Model.ToDoTaskViewModel.DeadlineDate;
 }
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
 <div class="addTask">
 	<h3>Edit task:</h3>
-	<form action="/ToDoList/Update" method="post">
-		<div>
+	<form asp-action="Update" method="post">
+		<span asp-validation-for="ToDoTaskViewModel.Title" class="text-danger"></span> <div>
 			<p>Title</p>
-			<input type="text" asp-for="Title" name="Title"value="@Model.ToDoTaskViewModel.Title" size="60" required/>
+			<input type="text" asp-for="ToDoTaskViewModel.Title" value="@Model.ToDoTaskViewModel.Title" size="50" />
 		</div>
 		<div>
 			<p>Category</p>
-			<select asp-for="CategoryId" name="CategoryId">
-			@foreach (var cat in Model.Categories)
-			{
-				<option @(cat.Id==Model.ToDoTaskViewModel.CategoryId ? "selected" : "") value="@cat.Id">@cat.Name</option>
-			}
-		</select>
+			<select asp-for="ToDoTaskViewModel.CategoryId">
+				@foreach (var cat in Model.Categories)
+				{
+					<!option @(cat.Id==Model.ToDoTaskViewModel.CategoryId ? "selected" : "") value="@cat.Id">@cat.Name</!option>
+				}
+			</select>
 		</div>
-		@if(Model.ToDoTaskViewModel.IsDone == false){
 		<div>
 			<p>Deadline (empty - no deadline)</p>
-			<input type="datetime-local" asp-for="DeadlineDate" value="@(deadlineDate.HasValue ? Convert.ToDateTime(deadlineDate).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") : "")" name="DeadlineDate"/>
+			<input type="datetime-local" asp-for="ToDoTaskViewModel.DeadlineDate" value="@Model.ToDoTaskViewModel.Id" />
 		</div>
-		}
-        <button type="submit" name="Id" value="@Model.ToDoTaskViewModel.Id" >Save</button>
+		<button type="submit" asp-for="Id" value="@Model.ToDoTaskViewModel.Id">SAve</button>
 	</form>
 </div>

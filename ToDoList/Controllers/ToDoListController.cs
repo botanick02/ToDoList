@@ -23,27 +23,19 @@ namespace ToDoList.Controllers
         [HttpGet]
         public ViewResult Index(int categoryId)
         {
-            ToDoTaskViewModelPage viewModelPage = new ToDoTaskViewModelPage();
-            var currentTasks = taskRepository.ListItems(isDone: false, categoryId: categoryId);
-            var completedTasks = taskRepository.ListItems(isDone: true, categoryId: categoryId);
-            var categories = categoryRepository.GetAllCategories();
-
-            viewModelPage.CurrentTasks = mapper.Map<List<ToDoTaskViewModel>>(currentTasks);
-            viewModelPage.CompletedTasks = mapper.Map<List<ToDoTaskViewModel>>(completedTasks);
-            viewModelPage.Categories = mapper.Map<List<CategoryViewModel>>(categories);
-            viewModelPage.CurrentCategory = categoryId;
+            var viewModelPage = PrepareViewModelForIndex(categoryId);
             return View("Index", viewModelPage);
         }
         [HttpPost]
         public IActionResult Create(ToDoTaskCreateViewModel task)
         {
-
             if (ModelState.IsValid)
             {
                 var taskModel = mapper.Map<ToDoTaskModel>(task);
                 bool res = taskRepository.Create(taskModel);
             }
-            return RedirectToAction("Index");
+            var viewModelPage = PrepareViewModelForIndex();
+            return View("Index", viewModelPage);
         }
         [HttpPost]
         public IActionResult Delete(int id)
@@ -77,12 +69,7 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                var pageViewModel = new ToDoTaskEditViewModelPage();
-
-                var taskDetails = taskRepository.GetTask(id);
-                var categories = categoryRepository.GetAllCategories();
-                pageViewModel.ToDoTaskViewModel = mapper.Map<ToDoTaskEditViewModel>(taskDetails);
-                pageViewModel.Categories = mapper.Map<List<CategoryViewModel>>(categories);
+                var pageViewModel = PrepareEditViewModel(id);
                 return View("Edit", pageViewModel);
             }
             return RedirectToAction("Index");
@@ -90,20 +77,38 @@ namespace ToDoList.Controllers
         [HttpPost]
         public IActionResult Update(ToDoTaskEditViewModel task)
         {
-
             if (ModelState.IsValid)
             {
                 var taskModel = mapper.Map<ToDoTaskModel>(task);
                 bool res = taskRepository.Update(taskModel);
-                Debug.WriteLine(res);
-                if (res)
-                {
-                    return RedirectToAction("Index");
-                }
-                return RedirectToAction("Edit", task);
-
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Edit", task);
+            var pageViewModel = PrepareEditViewModel(task.Id);
+            return View("Edit", pageViewModel);
+        }
+
+        private ToDoTaskViewModelPage PrepareViewModelForIndex(int categoryId = 1)
+		{
+            ToDoTaskViewModelPage viewModelPage = new ToDoTaskViewModelPage();
+            var currentTasks = taskRepository.ListItems(isDone: false, categoryId: categoryId);
+            var completedTasks = taskRepository.ListItems(isDone: true, categoryId: categoryId);
+            var categories = categoryRepository.GetAllCategories();
+
+            viewModelPage.CurrentTasks = mapper.Map<List<ToDoTaskViewModel>>(currentTasks);
+            viewModelPage.CompletedTasks = mapper.Map<List<ToDoTaskViewModel>>(completedTasks);
+            viewModelPage.Categories = mapper.Map<List<CategoryViewModel>>(categories);
+            viewModelPage.CurrentCategory = categoryId;
+            return viewModelPage;
+        }
+
+        private ToDoTaskEditViewModelPage PrepareEditViewModel(int id)
+		{
+            var pageViewModel = new ToDoTaskEditViewModelPage();
+            var taskDetails = taskRepository.GetTask(id);
+            var categories = categoryRepository.GetAllCategories();
+            pageViewModel.ToDoTaskViewModel = mapper.Map<ToDoTaskEditViewModel>(taskDetails);
+            pageViewModel.Categories = mapper.Map<List<CategoryViewModel>>(categories);
+            return pageViewModel;
         }
     }
 }

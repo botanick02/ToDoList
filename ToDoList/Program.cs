@@ -14,6 +14,7 @@ var config = AutoMapperConfig.Configure();
 IMapper mapper = config.CreateMapper();
 builder.Services.AddSingleton<IMapper>(mapper);
 
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

@@ -1,19 +1,20 @@
-﻿@using ToDoList.ViewModels
-@model ToDoTaskViewModelPage
+﻿@model ToDoList.ViewModels.ToDoTaskViewModelPage;
 @{
 	Layout = "_Layout";
 	ViewBag.Title = "Tasks - ToDoList";
 }
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 <div class="addTask">
 	<h3>Add task:</h3>
-	<form action="ToDoList/Create" method="post">
-		<div>
+	<form asp-action="Create" method="post">
+		<span asp-validation-for="Task.Title" class="text-danger"></span> <div>
 			<p>Title</p>
-			<input type="text" asp-for="Title" name="Title" required size="50" />
+			<input type="text" asp-for="Task.Title" size="50" />
 		</div>
 		<div>
 			<p>Category</p>
-			<select asp-for="CategoryId" name="CategoryId">
+			<select asp-for="Task.CategoryId">
 				@foreach (var cat in Model.Categories)
 				{
 					<option value="@cat.Id">@cat.Name</option>
@@ -22,7 +23,7 @@
 		</div>
 		<div>
 			<p>Deadline (empty - no deadline)</p>
-			<input type="datetime-local" asp-for="DeadlineDate" name="DeadlineDate" />
+			<input type="datetime-local" asp-for="Task.DeadlineDate" />
 		</div>
 		<input type="submit" value="Create" />
 	</form>
@@ -33,7 +34,7 @@
 			<option value="0">All</option>
 			@foreach (var cat in Model.Categories)
 			{
-				<option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</option>
+				<!option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</!option>
 			}
 		</select>
 		<input type="submit" value="Show" />
@@ -61,11 +62,14 @@
 						<td>
 							@if (task.DeadlineDate.HasValue)
 							{
-								@task.DeadlineDate;
-								if(task.DeadlineDate > DateTime.Now)
+								@task.DeadlineDate
+								;
+								if (task.DeadlineDate > DateTime.Now)
 								{
 									<span class="active">Active</span>
-								}else{
+								}
+								else
+								{
 									<span class="expired">Expired</span>
 								}
 							}
@@ -75,7 +79,14 @@
 							<div class="taskControl">
 								<form action="/ToDoList/MarkAsDone" method="post"><button class="setDoneButt" type="submit" name="Id" value="@task.Id">Complete✔</button></form>
 								<form action="/ToDoList/Edit" method="post"><button class="editButt" type="submit" name="Id" value="@task.Id">Edit</button></form>
-								<form action="/ToDoList/Delete" method="post"><button class="deleteButt" type="submit" name="Id" value="@task.Id">❌</button></form>
+								<button data-id="@task.Id" class="deleteButt">❌</button>
+								<div class="delConfirmationTask" id="delConfirmation@(task.Id)">
+									<p>Are you sure?</p>
+									<form action="/ToDoList/Delete" method="post">
+										<div class="delDecline">No</div>
+										<button class="delAccept" type="submit" name="Id" value="@task.Id">Yes</button>
+									</form>
+								</div>
 							</div>
 						</td>
 					</tr>
@@ -113,7 +124,14 @@
 							<div class="taskControl">
 								<form action="/ToDoList/MarkAsNotDone" method="post"><button class="setNotDoneButt" type="submit" name="Id" value="@task.Id">Incomplete⮌</button></form>
 								<form action="/ToDoList/Edit" method="post"><button class="editButt" type="submit" name="Id" value="@task.Id">Edit</button></form>
-								<form action="/ToDoList/Delete" method="post"><button class="deleteButt" type="submit" name="Id" value="@task.Id">❌</button></form>
+								<button data-id="@task.Id" class="deleteButt">❌</button>
+								<div class="delConfirmationTask" id="delConfirmation@(task.Id)">
+									<p>Are you sure?</p>
+									<form action="/ToDoList/Delete" method="post">
+										<div class="delDecline">No</div>
+										<button class="delAccept" type="submit" name="Id" value="@task.Id">Yes</button>
+									</form>
+								</div>
 							</div>
 						</td>
 					</tr>
@@ -126,3 +144,4 @@
 		</table>
 	</div>
 </div>
+<script src="~/js/site.js"></script>

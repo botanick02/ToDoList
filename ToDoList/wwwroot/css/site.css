@@ -104,6 +104,8 @@ header a.logo {
 .taskControl {
     display: flex;
     justify-content: space-around;
+    position: relative;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .tasksWrapper table {
@@ -140,7 +142,7 @@ header a.logo {
     display: flex;
     overflow-x: scroll;
     flex-wrap: nowrap;
-    padding: 20px;
+    padding: 60px 20px 20px;
 }
 
 .task {
@@ -169,6 +171,7 @@ header a.logo {
         .categoryAdd *[type="submit"]:hover {
             background-color: #B6D6E7;
         }
+
         .categoryAdd *[type="submit"]:focus {
             background-color: #345B63;
             color: #B6D6E7;
@@ -180,6 +183,7 @@ header a.logo {
     border: 2px solid #345B63;
     padding: 10px;
     align-items: center;
+    position: relative;
 }
 
     .categoryItem button {
@@ -382,4 +386,55 @@ header a.logo {
     font-size: 1.15vw;
     text-align: left;
     width: 30%;
+}
+
+.delConfirmationTask {
+    display: none;
+    width: 150px;
+    border: 2px solid #DBA994;
+    color: #913230;
+    position: absolute;
+    right: -160px;
+    bottom: -5px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.delConfirmationCategory {
+    display: none;
+    width: 150px;
+    border: 2px solid #DBA994;
+    color: #913230;
+    position: absolute;
+    bottom: 60px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.delConfirmationShow {
+    display: block;
+}
+
+    .delConfirmationShow form {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+.delDecline {
+    font-size: 1.2vw;
+    color: #4F7E2A;
+    cursor: pointer;
+}
+
+.delAccept {
+    font-size: 1.2vw;
+    color: #913230;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+.text-danger {
+    color: #913230;
+}
+.addTask form input.input-validation-error {
+    border: 2px solid #913230;
 }

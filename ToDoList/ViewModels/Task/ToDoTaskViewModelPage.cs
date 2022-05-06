@@ -8,6 +8,7 @@ namespace ToDoList.ViewModels
         public List<ToDoTaskViewModel> CompletedTasks { get; set; }
         public List<CategoryViewModel> Categories { get; set; }
         public int CurrentCategory { get; set; }
+        public ToDoTaskCreateViewModel Task { get; set; }
 
     }
 }

@@ -1,34 +1,45 @@
-﻿@model ToDoList.ViewModels.CategoriesViewModelPage; 
+﻿@model ToDoList.ViewModels.CategoriesViewModelPage;
 @{
-	Layout = "_Layout";	
+	Layout = "_Layout";
 	ViewBag.Title = "Categories - ToDoList";
 }
 
 
 
-	<div class="categories">
-		<h3>Categories</h3>
-		<div class="horizontalList">
-			@if(Model.Categories.Count > 0){
-				@foreach (var cat in Model.Categories)
+<div class="categories">
+	<h3>Categories</h3>
+	<div class="horizontalList">
+		@if (Model.Categories.Count > 0)
+		{
+			@foreach (var cat in Model.Categories)
+			{
+				@if (@cat.Id != 1)
 				{
 					<div class="categoryItem">
-					<p>@cat.Name</p>
-					@if(@cat.Id != 1){
+						<p>@cat.Name</p>
 						<form action="/Categories/Edit" method="post"><button class="editButt" type="submit" name="Id" value="@cat.Id">Edit</button></form>
-						<form action="/Categories/Delete" method="post"><button class="deleteButt" type="submit" name="Id" value="@cat.Id">❌</button></form>
-					}
+						<button data-id="@cat.Id" class="deleteButt">❌</button>
+						<div class="delConfirmationCategory" id="delConfirmation@(cat.Id)">
+							<p>Are you sure?</p>
+							<form action="/Categories/Delete" method="post">
+								<div class="delDecline">No</div>
+								<button class="delAccept" type="submit" name="Id" value="@cat.Id">Yes</button>
+							</form>
+						</div>
 					</div>
 				}
-			}else
-				{
-				<h4>Nothing here</h4>	
-				}
-		</div>
-	
+			}
+		}
+		else
+		{
+			<h4>Nothing here</h4>
+		}
+	</div>
+
 </div>
 <h3>Create category</h3>
- <form action="/Categories/Create" method="post" class="categoryAdd">
-            <input asp-for="name" name="name" type="text" size="30" required/>
-            <input type="submit" value="Create" />
-    </form>	
+<form action="/Categories/Create" method="post" class="categoryAdd">
+	<input asp-for="name" name="name" type="text" size="30" required />
+	<input type="submit" value="Create" />
+</form>
+<script src="~/js/site.js"></script>
