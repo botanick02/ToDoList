@@ -2,7 +2,7 @@
 
 namespace ToDoList.ViewModels
 {
-    public class ToDoTaskViewModelPage
+    public class TasksIndexViewModelPage
     {
         public List<ToDoTaskViewModel> CurrentTasks { get; set; }
         public List<ToDoTaskViewModel> CompletedTasks { get; set; }
