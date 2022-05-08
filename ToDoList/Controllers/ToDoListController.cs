@@ -21,7 +21,7 @@ namespace ToDoList.Controllers
         }
 
         [HttpGet]
-        public ViewResult Index(int categoryId)
+        public ViewResult Index(int? categoryId = null)
         {
             var viewModelPage = PrepareViewModelForIndex(categoryId);
             return View("Index", viewModelPage);
@@ -99,17 +99,17 @@ namespace ToDoList.Controllers
         }
 
 
-        private TasksIndexViewModelPage PrepareViewModelForIndex(int categoryId = 1)
+        private TasksIndexViewModelPage PrepareViewModelForIndex(int? categoryId = null)
         {
             TasksIndexViewModelPage viewModelPage = new TasksIndexViewModelPage();
-            var currentTasks = taskRepository.ListItems(isDone: false, categoryId: categoryId);
-            var completedTasks = taskRepository.ListItems(isDone: true, categoryId: categoryId);
+            var currentTasks = taskRepository.ListTasks(false, categoryId);
+            var completedTasks = taskRepository.ListTasks(true, categoryId);
             var categories = categoryRepository.GetAllCategories();
 
             viewModelPage.CurrentTasks = mapper.Map<List<ToDoTaskViewModel>>(currentTasks);
             viewModelPage.CompletedTasks = mapper.Map<List<ToDoTaskViewModel>>(completedTasks);
             viewModelPage.Categories = mapper.Map<List<CategoryViewModel>>(categories);
-            viewModelPage.CurrentCategory = categoryId;
+            viewModelPage.CurrentCategory = categoryId ?? 0;
             return viewModelPage;
         }
 

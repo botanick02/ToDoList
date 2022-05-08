@@ -8,14 +8,14 @@ namespace MicrosoftSqlDB.Models
 {
     public class CategoryDBRepository : ICategoryRepository
     {
-        private string _connectionString;
+        private string connectionString;
         public CategoryDBRepository()
         {
-            _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoListDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoListDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
         public List<CategoryModel> GetAllCategories()
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 string sqlQuery = "SELECT * FROM Categories";
                 var itemsList = conn.Query<CategoryModel>(sqlQuery).ToList();
@@ -24,7 +24,7 @@ namespace MicrosoftSqlDB.Models
         }
         public CategoryModel GetCategory(int id)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
                 string sqlQuery = "SELECT * FROM Categories WHERE Id = @Id";
@@ -35,7 +35,7 @@ namespace MicrosoftSqlDB.Models
         public bool Delete(CategoryModel category)
         {
             var affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = category.Id };
                 string sqlQuery = $"DELETE FROM Categories WHERE Id = @Id";
@@ -46,7 +46,7 @@ namespace MicrosoftSqlDB.Models
         public bool Create(CategoryModel category)
         {
             int affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Name = category.Name };
                 string sqlQuery = $"INSERT INTO Categories VALUES(@Name)";
@@ -58,7 +58,7 @@ namespace MicrosoftSqlDB.Models
         public bool Update(CategoryModel category)
         {
             int affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Name = category.Name, Id = category.Id };
                 string sqlQuery = $"UPDATE Categories SET Name = @Name WHERE Id = @Id";

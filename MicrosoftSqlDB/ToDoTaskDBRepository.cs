@@ -9,56 +9,66 @@ namespace MicrosoftSqlDB.Models
 {
     public class ToDoTaskDBRepository : IToDoTaskRepository
     {
-        private string _connectionString;
+        private string connectionString;
 
         public ToDoTaskDBRepository()
         {
-            _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoListDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoListDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
-        public List<ToDoTaskModel> ListItems(bool? isDone = null, int categoryId = 0)
+        public List<ToDoTaskModel> ListTasks(bool? isDone, int? categoryId)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            var tasks = new List<ToDoTaskModel>();
+            if (!isDone.HasValue)
             {
-                var parameters = new { Id = categoryId, IsDone = isDone };
-                string sqlWhere = "";
-                if (categoryId != 0)
-                {
-                    sqlWhere += $"WHERE Tasks.CategoryId = @Id ";
-                }
-                if (isDone.HasValue)
-                {
-                    if (sqlWhere != "")
-                    {
-                        sqlWhere += $"AND Tasks.IsDone = @IsDone ";
-                    }
-                    else
-                    {
-                        sqlWhere += $"WHERE Tasks.IsDone = @IsDone ";
-                    }
-                    if (isDone == true)
-                    {
-                        sqlWhere += " ORDER BY Tasks.DoneDate DESC";
-                    }
-                    else
-                    {
-                        sqlWhere += " ORDER BY COALESCE(Tasks.DeadlineDate,'2079-01-01') ASC";
-                    }
-                }
-
+                tasks.AddRange(ListCurrentTasks(categoryId));
+                tasks.AddRange(ListCompletedTasks(categoryId));
+            }
+            else if (isDone.Value)
+            {
+                tasks.AddRange(ListCompletedTasks(categoryId));
+            }
+            else
+            {
+                tasks.AddRange(ListCurrentTasks(categoryId));
+            }
+            return tasks;
+        }
+        private List<ToDoTaskModel> ListCurrentTasks(int? categoryId)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                var parameters = new { Id = categoryId };
                 string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
                     "Tasks.DoneDate FROM Tasks " +
-                    "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " + sqlWhere;
+                    "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
+                    "WHERE Tasks.IsDone = 0" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "");
+                var tasksList = conn.Query<ToDoTaskModel>(sqlQuery, parameters).ToList();
+                return tasksList;
+            }
+        }
+        private List<ToDoTaskModel> ListCompletedTasks(int? categoryId)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                var parameters = new { Id = categoryId };
+                string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
+                    "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
+                    "Tasks.DoneDate FROM Tasks " +
+                    "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
+                    "WHERE Tasks.IsDone = 1" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "");
+
                 var tasksList = conn.Query<ToDoTaskModel>(sqlQuery, parameters).ToList();
                 return tasksList;
             }
         }
 
+
         public bool Create(ToDoTaskModel task)
         {
             int affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new
                 {
@@ -75,7 +85,7 @@ namespace MicrosoftSqlDB.Models
         public bool Delete(int id)
         {
             var affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
                 string sqlQuery = $"DELETE FROM Tasks WHERE Id = @Id";
@@ -87,7 +97,7 @@ namespace MicrosoftSqlDB.Models
         public bool SetDoneStatus(int id, bool status)
         {
             var affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id, Status = status };
                 string sqlQuery = $"UPDATE Tasks SET IsDone = @Status, DoneDate = '{DateTime.Now}' WHERE Id = @Id";
@@ -98,7 +108,7 @@ namespace MicrosoftSqlDB.Models
 
         public ToDoTaskModel GetTask(int id)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
                 string sqlQuery = "SELECT * FROM Tasks WHERE Id = @Id";
@@ -109,7 +119,7 @@ namespace MicrosoftSqlDB.Models
         public bool Update(ToDoTaskModel task)
         {
             var affectedRows = 0;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new
                 {

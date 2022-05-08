@@ -1,13 +1,14 @@
 using AutoMapper;
 using Business.Models;
 using MicrosoftSqlDB.Models;
+using XMLStorage;
 using ToDoList;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IToDoTaskRepository, ToDoTaskDBRepository>();
+builder.Services.AddTransient<IToDoTaskRepository, ToDoTaskXMLRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryDBRepository>();
 
 var config = AutoMapperConfig.Configure();

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+	<Tasks>
+		<Task Id="1" Title="Do something" CategoryId="1" CreatedDate="05-05-2022 12:40:00" DeadlineDate="05-10-2022 12:40:00" IsDone="false" DoneDate=""/>
+		<Task Id="2" Title="Do something 2" CategoryId="2" CreatedDate="05-05-2022 15:40:00" DeadlineDate="05-06-2022 17:00:00" IsDone="false" DoneDate=""/>
+		<Task Id="2" Title="Do something 2" CategoryId="2" CreatedDate="05-05-2022 15:40:00" DeadlineDate="05-07-2022 08:00:00" IsDone="false" DoneDate=""/>
+		<Task Id="2" Title="Do something 2" CategoryId="2" CreatedDate="05-05-2022 15:40:00" DeadlineDate="" IsDone="false" DoneDate=""/>
+
+		<Task Id="1" Title="Do something 3" CategoryId="1" CreatedDate="05-05-2022 12:40:00" DeadlineDate="" IsDone="true" DoneDate="05-05-2022 12:40:00"/>
+		<Task Id="2" Title="Do something 4" CategoryId="2" CreatedDate="05-05-2022 15:40:00" DeadlineDate="" IsDone="true" DoneDate="05-05-2022 14:40:00"/>
+		<Task Id="2" Title="Do something 5" CategoryId="2" CreatedDate="05-03-2022 15:20:00" DeadlineDate="" IsDone="true" DoneDate="05-05-2022 12:55:00"/>
+	</Tasks>
+	<Categories>
+		<Category Id="1" Name="Uncategorized"/>
+		<Category Id="2" Name="School"/>
+	</Categories>
+</Root>

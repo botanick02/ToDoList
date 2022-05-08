@@ -31,7 +31,7 @@
 <div class="categoryFilter">
 	<form asp-action="Index" method="get">
 		<select name="categoryId" id="categoryId">
-			<option value="0">All</option>
+			<option value="">All</option>
 			@foreach (var cat in Model.Categories)
 			{
 				<!option @(cat.Id==Model.CurrentCategory ? "selected" : "") value="@cat.Id">@cat.Name</!option>

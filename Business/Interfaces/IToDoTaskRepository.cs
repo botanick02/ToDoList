@@ -4,7 +4,7 @@ namespace Business.Models
 {
     public interface IToDoTaskRepository
     {
-        List<ToDoTaskModel> ListItems(bool? isDone, int categoryId);
+        List<ToDoTaskModel> ListTasks(bool? isDone, int? categoryId);
         ToDoTaskModel GetTask(int id);
         bool Create(ToDoTaskModel task);
         bool Delete(int id);
