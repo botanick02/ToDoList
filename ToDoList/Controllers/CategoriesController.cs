@@ -9,9 +9,9 @@ namespace ToDoList.Controllers
     {
         private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
-        public CategoriesController(ICategoryRepository catRep, IMapper mapper)
+        public CategoriesController(CategoryRepositoryResolver catRep, IMapper mapper)
         {
-            categoryRepository = catRep;
+            categoryRepository = catRep("X");
             this.mapper = mapper;
         }
         [HttpGet]
@@ -29,7 +29,7 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 var categoryModel = mapper.Map<CategoryModel>(category);
-                bool res = categoryRepository.Delete(categoryModel);
+                bool res = categoryRepository.Delete(category.Id);
             }
             return RedirectToAction("Index");
         }

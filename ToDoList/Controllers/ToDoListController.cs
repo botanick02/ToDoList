@@ -2,6 +2,7 @@
 using Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ToDoList.sourceChanger;
 using ToDoList.ViewModels;
 
 
@@ -13,10 +14,10 @@ namespace ToDoList.Controllers
         private ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
 
-        public ToDoListController(IToDoTaskRepository taskRep, ICategoryRepository catRep, IMapper mapper)
+        public ToDoListController(ToDoTaskRepositoryResolver taskRep, CategoryRepositoryResolver catRep, IMapper mapper)
         {
-            taskRepository = taskRep;
-            categoryRepository = catRep;
+            taskRepository = taskRep(CurrentStorage.CurrentSource);
+            categoryRepository = catRep(CurrentStorage.CurrentSource);
             this.mapper = mapper;
         }
 
@@ -75,6 +76,7 @@ namespace ToDoList.Controllers
                 var categories = categoryRepository.GetAllCategories();
                 pageViewModel.ToDoTaskEditViewModel = mapper.Map<ToDoTaskEditViewModel>(taskDetails);
                 pageViewModel.Categories = mapper.Map<List<CategoryViewModel>>(categories);
+                pageViewModel.IsDone = taskDetails.IsDone;
                 return View("Edit", pageViewModel);
             }
             return RedirectToAction("Index");
@@ -98,6 +100,11 @@ namespace ToDoList.Controllers
             return RedirectToAction("Edit", task);
         }
 
+        public IActionResult ChangeCurrentSource(string source)
+        {
+            CurrentStorage.SetCurrentSource(source);
+            return RedirectToAction("Index");
+        }
 
         private TasksIndexViewModelPage PrepareViewModelForIndex(int? categoryId = null)
         {
@@ -112,7 +119,6 @@ namespace ToDoList.Controllers
             viewModelPage.CurrentCategory = categoryId ?? 0;
             return viewModelPage;
         }
-
-      
     }
+
 }

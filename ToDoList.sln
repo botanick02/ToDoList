@@ -5,11 +5,11 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList", "ToDoList\ToDoList.csproj", "{D3E8CF73-5B29-4CB6-8D35-AA275A40A0E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{A1B57BC7-A8F1-41EF-9698-27AE23A5940B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Business", "Business\ToDoList.Business.csproj", "{A1B57BC7-A8F1-41EF-9698-27AE23A5940B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrosoftSqlDB", "MicrosoftSqlDB\MicrosoftSqlDB.csproj", "{1F1C8424-56FD-4302-8C47-A13273C95696}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.MicrosoftSqlDB", "MicrosoftSqlDB\ToDoList.MicrosoftSqlDB.csproj", "{1F1C8424-56FD-4302-8C47-A13273C95696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLStorage", "XMLStorage\XMLStorage.csproj", "{8C8CB87E-AD54-40CD-8409-E8CC297B75A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.XMLStorage", "XMLStorage\ToDoList.XMLStorage.csproj", "{8C8CB87E-AD54-40CD-8409-E8CC297B75A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

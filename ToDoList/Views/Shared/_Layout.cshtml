@@ -18,6 +18,13 @@
 					@Html.ActionLink("Categories", "Index", "Categories")
 				</li>
 			</ul>
+			<form action="/ToDoList/ChangeCurrentSource" class="sourceChanger">
+			<select name="Source">
+				<option value="X">XML</option>
+				<option value="D">SQlDb</option>
+			</select>	
+			<input type="submit" value="Choose" />
+			</form>
 	</header>
 	<div class="container">
 		@RenderBody()

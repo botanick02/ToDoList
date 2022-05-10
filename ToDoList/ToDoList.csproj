@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Business\Business.csproj" />
-    <ProjectReference Include="..\MicrosoftSqlDB\MicrosoftSqlDB.csproj" />
-    <ProjectReference Include="..\XMLStorage\XMLStorage.csproj" />
+    <ProjectReference Include="..\Business\ToDoList.Business.csproj" />
+    <ProjectReference Include="..\MicrosoftSqlDB\ToDoList.MicrosoftSqlDB.csproj" />
+    <ProjectReference Include="..\XMLStorage\ToDoList.XMLStorage.csproj" />
   </ItemGroup>
 
 </Project>

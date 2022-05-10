@@ -32,12 +32,12 @@ namespace MicrosoftSqlDB.Models
                 return res;
             }
         }
-        public bool Delete(CategoryModel category)
+        public bool Delete(int id)
         {
             var affectedRows = 0;
             using (var conn = new SqlConnection(connectionString))
             {
-                var parameters = new { Id = category.Id };
+                var parameters = new { Id = id };
                 string sqlQuery = $"DELETE FROM Categories WHERE Id = @Id";
                 affectedRows = conn.Execute(sqlQuery, parameters);
             }
