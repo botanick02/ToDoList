@@ -16,7 +16,7 @@ namespace MicrosoftSqlDB.Models
             connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoListDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
-        public List<ToDoTaskModel> ListTasks(bool? isDone, int? categoryId)
+        public List<ToDoTaskModel> ListTasks(bool? isDone = null, int? categoryId = null)
         {
             var tasks = new List<ToDoTaskModel>();
             if (!isDone.HasValue)
@@ -43,7 +43,8 @@ namespace MicrosoftSqlDB.Models
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
                     "Tasks.DoneDate FROM Tasks " +
                     "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
-                    "WHERE Tasks.IsDone = 0" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "");
+                    "WHERE Tasks.IsDone = 0" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "") +
+                    " ORDER BY COALESCE(Tasks.DeadlineDate,'2079-01-01') ASC";
                 var tasksList = conn.Query<ToDoTaskModel>(sqlQuery, parameters).ToList();
                 return tasksList;
             }
@@ -57,7 +58,8 @@ namespace MicrosoftSqlDB.Models
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
                     "Tasks.DoneDate FROM Tasks " +
                     "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
-                    "WHERE Tasks.IsDone = 1" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "");
+                    "WHERE Tasks.IsDone = 1" + (categoryId.HasValue ? " AND Tasks.CategoryId = @Id" : "") +
+                    " ORDER BY Tasks.DoneDate DESC";
 
                 var tasksList = conn.Query<ToDoTaskModel>(sqlQuery, parameters).ToList();
                 return tasksList;

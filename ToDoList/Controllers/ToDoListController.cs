@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoList.sourceChanger;
 using ToDoList.ViewModels;
-
+using GraphQL;
+using GraphQL.Types;
 
 namespace ToDoList.Controllers
 {
@@ -24,6 +25,12 @@ namespace ToDoList.Controllers
         [HttpGet]
         public ViewResult Index(int? categoryId = null)
         {
+            //var schema = Schema.For(@"
+            //type Query {
+            //    hello: String;
+            //}
+            //");
+
             var viewModelPage = PrepareViewModelForIndex(categoryId);
             return View("Index", viewModelPage);
         }
@@ -100,6 +107,7 @@ namespace ToDoList.Controllers
             return RedirectToAction("Edit", task);
         }
 
+
         public IActionResult ChangeCurrentSource(string source)
         {
             CurrentStorage.SetCurrentSource(source);
@@ -116,7 +124,7 @@ namespace ToDoList.Controllers
             viewModelPage.CurrentTasks = mapper.Map<List<ToDoTaskViewModel>>(currentTasks);
             viewModelPage.CompletedTasks = mapper.Map<List<ToDoTaskViewModel>>(completedTasks);
             viewModelPage.Categories = mapper.Map<List<CategoryViewModel>>(categories);
-            viewModelPage.CurrentCategory = categoryId ?? 0;
+            viewModelPage.CurrentCategory = categoryId;
             return viewModelPage;
         }
     }

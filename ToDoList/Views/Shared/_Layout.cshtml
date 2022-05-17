@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using ToDoList.sourceChanger
+@{
+	var currentSource = CurrentStorage.CurrentSource;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -20,8 +24,8 @@
 			</ul>
 			<form action="/ToDoList/ChangeCurrentSource" class="sourceChanger">
 			<select name="Source">
-				<option value="X">XML</option>
-				<option value="D">SQlDb</option>
+				<option @(currentSource == "X" ? "selected" : "") value="X">XML</option>
+				<option @(currentSource == "D" ? "selected" : "") value="D">SQlDb</option>
 			</select>	
 			<input type="submit" value="Choose" />
 			</form>

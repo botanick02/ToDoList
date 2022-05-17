@@ -1,8 +1,12 @@
 using AutoMapper;
-using Business.Models;
 using MicrosoftSqlDB.Models;
 using XMLStorage;
 using ToDoList;
+using ToDoList.GraphQL;
+using GraphQL.Server;
+using GraphQL.SystemTextJson;
+using GraphQL;
+using ToDoList.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +50,12 @@ builder.Services.AddSingleton<IMapper>(mapper);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSingleton<AppSchema>();
+builder.Services.AddGraphQL()
+                .AddSystemTextJson()
+                .AddGraphTypes(typeof(AppSchema));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -58,8 +68,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+
+app.UseGraphQL<AppSchema>();
+app.UseGraphQLAltair();
 
 app.UseAuthorization();
 

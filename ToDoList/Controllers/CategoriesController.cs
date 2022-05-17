@@ -2,6 +2,7 @@
 using ToDoList.ViewModels;
 using AutoMapper;
 using Business.Models;
+using ToDoList.sourceChanger;
 
 namespace ToDoList.Controllers
 {
@@ -11,7 +12,7 @@ namespace ToDoList.Controllers
         private readonly IMapper mapper;
         public CategoriesController(CategoryRepositoryResolver catRep, IMapper mapper)
         {
-            categoryRepository = catRep("X");
+            categoryRepository = catRep(CurrentStorage.CurrentSource);
             this.mapper = mapper;
         }
         [HttpGet]
@@ -24,12 +25,11 @@ namespace ToDoList.Controllers
             return View("Categories", viewModel);
         }
         [HttpPost]
-        public ActionResult Delete(CategoryDeleteViewModel category)
+        public ActionResult Delete(int id)
         {
             if (ModelState.IsValid)
             {
-                var categoryModel = mapper.Map<CategoryModel>(category);
-                bool res = categoryRepository.Delete(category.Id);
+                categoryRepository.Delete(id);
             }
             return RedirectToAction("Index");
         }

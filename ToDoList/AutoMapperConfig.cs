@@ -12,7 +12,6 @@ namespace ToDoList
                 cfg.CreateMap<ToDoTaskCreateViewModel, ToDoTaskModel>();
                 cfg.CreateMap<ToDoTaskViewModel, ToDoTaskModel>().ReverseMap();
                 cfg.CreateMap<ToDoTaskEditViewModel, ToDoTaskModel>().ReverseMap();
-                cfg.CreateMap<CategoryDeleteViewModel, CategoryModel>();
                 cfg.CreateMap<CategoryCreateViewModel, CategoryModel>();
                 cfg.CreateMap<CategoryViewModel, CategoryModel>().ReverseMap();
             });
