@@ -50,10 +50,10 @@ builder.Services.AddSingleton<IMapper>(mapper);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<AppSchema>();
+builder.Services.AddSingleton<DoToListSchema>();
 builder.Services.AddGraphQL()
                 .AddSystemTextJson()
-                .AddGraphTypes(typeof(AppSchema));
+                .AddGraphTypes(typeof(DoToListSchema));
 
 
 var app = builder.Build();
@@ -70,7 +70,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseGraphQL<AppSchema>();
+app.UseGraphQL<DoToListSchema>();
 app.UseGraphQLAltair();
 
 app.UseAuthorization();

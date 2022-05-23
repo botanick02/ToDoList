@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Models;
+using ToDoList.GraphQL.ToDoTasks.Inputs;
 using ToDoList.ViewModels;
 
 namespace ToDoList
@@ -14,6 +15,9 @@ namespace ToDoList
                 cfg.CreateMap<ToDoTaskEditViewModel, ToDoTaskModel>().ReverseMap();
                 cfg.CreateMap<CategoryCreateViewModel, CategoryModel>();
                 cfg.CreateMap<CategoryViewModel, CategoryModel>().ReverseMap();
+
+                cfg.CreateMap<ToDoTaskModel, ToDoTaskCreateInput>().ReverseMap();
+
             });
             mapperConfiguration.CreateMapper();
             return mapperConfiguration;

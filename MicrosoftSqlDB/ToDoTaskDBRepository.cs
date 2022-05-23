@@ -113,7 +113,9 @@ namespace MicrosoftSqlDB.Models
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
-                string sqlQuery = "SELECT * FROM Tasks WHERE Id = @Id";
+                string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name as Category," +
+                    " Tasks.CreatedDate, Tasks.IsDone, Tasks.DeadlineDate, Tasks.DoneDate FROM Tasks" +
+                    " LEFT JOIN Categories ON Tasks.CategoryId = Categories.Id WHERE Tasks.Id = @Id";
                 ToDoTaskModel res = conn.QueryFirst<ToDoTaskModel>(sqlQuery, parameters);
                 return res;
             }

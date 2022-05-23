@@ -11,11 +11,11 @@ namespace ToDoList.Extensions
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             
-            services.AddSingleton<AppSchema>();
+            services.AddSingleton<DoToListSchema>();
             services
                 .AddGraphQL()
                 .AddSystemTextJson()
-                .AddGraphTypes(typeof(AppSchema));
+                .AddGraphTypes(typeof(DoToListSchema));
             return services;
         }
     }

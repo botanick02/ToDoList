@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml;
+using System.Diagnostics;
 
 namespace XMLStorage
 {
@@ -116,11 +117,31 @@ namespace XMLStorage
         }
         public ToDoTaskModel GetTask(int id)
         {
-            var task = xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).Select(t => new ToDoTaskModel()
+            var root = xmlDocument.Root;
+            var tasksXML = new XElement("Tasks",
+                from c in root.Element("Tasks").Elements("Task")
+                join o in root.Element("Categories").Elements("Category")
+                        on (string)c.Attribute("CategoryId") equals
+                           (string)o.Attribute("Id")
+                orderby DateTime.Parse(c.Attribute("DeadlineDate").Value != "" ? c.Attribute("DeadlineDate").Value : "01-01-2100")
+                select new XElement("Task",
+                new XAttribute("Id", (string)c.Attribute("Id")),
+                new XAttribute("Title", (string)c.Attribute("Title")),
+                new XAttribute("CategoryId", (string)c.Attribute("CategoryId")),
+                new XAttribute("Category", (string)o.Attribute("Name")),
+                new XAttribute("CreatedDate", (string)c.Attribute("CreatedDate")),
+                new XAttribute("IsDone", (string)c.Attribute("IsDone")),
+                new XAttribute("DoneDate", (string)c.Attribute("DoneDate")),
+                new XAttribute("DeadlineDate", (string)c.Attribute("DeadlineDate"))
+                )
+                );
+            Debug.WriteLine(tasksXML);
+            var task = tasksXML.Elements("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).Select(t => new ToDoTaskModel()
             {
                 Id = XmlConvert.ToInt32(t.Attribute("Id").Value),
                 Title = t.Attribute("Title").Value,
                 CategoryId = XmlConvert.ToInt32(t.Attribute("CategoryId").Value),
+                Category = t.Attribute("Category").Value,
                 DeadlineDate = t.Attribute("DeadlineDate").Value != "" ? (DateTime?)DateTime.Parse(t.Attribute("DeadlineDate").Value) : null,
                 IsDone = bool.Parse(t.Attribute("IsDone").Value),
             }).First();

@@ -2,7 +2,7 @@
 {
     public static class CurrentStorage
     {
-        public static string CurrentSource = "X";
+        public static string CurrentSource = "D";
         public static void SetCurrentSource(string source)
         {
             CurrentSource = source;
