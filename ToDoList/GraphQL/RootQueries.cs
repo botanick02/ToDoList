@@ -18,6 +18,16 @@ namespace ToDoList.GraphQL
             Field<CategoriesQueries>()
                 .Name("Categories")
                 .Resolve(_ => new { });
+
+            Field<NonNullGraphType<StringGraphType>>()
+                .Name("SetSource")
+                .Argument<NonNullGraphType<StringGraphType>, string>("Source", "Set source char")
+                .Resolve(context =>
+                {
+                    var source = context.GetArgument<string>("Source");
+                    CurrentStorage.SetCurrentSource(source);
+                    return source;
+                });
         }
     }
 }

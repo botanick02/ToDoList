@@ -1,4 +1,5 @@
 ﻿@using ToDoList.sourceChanger
+@using ToDoList.sourceChanger.Enums;
 @{
 	var currentSource = CurrentStorage.CurrentSource;
 }
@@ -24,8 +25,10 @@
 			</ul>
 			<form action="/SourceSwitch/ChangeCurrentSource" class="sourceChanger" method="post">
 			<select name="Source">
-				<option @(currentSource == "X" ? "selected" : "") value="X">XML</option>
-				<option @(currentSource == "D" ? "selected" : "") value="D">SQlDb</option>
+				@foreach(string source in Enum.GetNames(typeof(StorageSources)))
+				{
+					<option @(currentSource == source ? "selected" : "") value="@(source)">@(source)</option>
+				}
 			</select>
 			<input type="hidden" name="controller" value="@(ViewContext.RouteData.Values["controller"])"/>
 			<input type="hidden" name="action" value="@(ViewContext.RouteData.Values["action"])"/>

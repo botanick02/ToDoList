@@ -71,7 +71,7 @@ namespace ToDoList.Controllers
                 pageViewModel.IsDone = taskDetails.IsDone;
                 return View("Edit", pageViewModel);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index");   
         }
         [HttpPost]
         public IActionResult Update(ToDoTaskEditViewModel task)
