@@ -12,9 +12,9 @@ namespace ToDoList.GraphQL
                 .Name("ToDoTasks")
                 .Resolve(_ => new { });
 
-            //Field<CategoriesMutations>()
-            //   .Name("Categories")
-            //   .Resolve(_ => new { });
+            Field<CategoriesMutations>()
+               .Name("Categories")
+               .Resolve(_ => new { });
 
         }
     }

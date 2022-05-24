@@ -5,7 +5,7 @@
     <Task Id="2" Title="Do something 3d" CategoryId="1" CreatedDate="05-05-2022 12:40:00" IsDone="True" DoneDate="05-05-2022 12:40:00" DeadlineDate="" />
     <Task Id="3" Title="some other new task" CategoryId="3" IsDone="False" CreatedDate="2022-05-10T00:34:08.1677777+02:00" DoneDate="2022-05-10T11:19:39.8042249+02:00" DeadlineDate="2022-05-12T11:16:00" />
     <Task Id="4" Title="Do math" CategoryId="2" IsDone="True" CreatedDate="2022-05-10T11:20:40.6535499+02:00" DoneDate="2022-05-10T11:21:16.9798334+02:00" DeadlineDate="5/11/2022 8:00:00 PM" />
-    <Task Id="6" Title="no deadline" CategoryId="1" IsDone="False" CreatedDate="2022-05-10T11:29:08.172911+02:00" DoneDate="2022-05-10T11:29:26.4941072+02:00" DeadlineDate="" />
+    <Task Id="6" Title="no deadline" CategoryId="1" IsDone="False" CreatedDate="2022-05-10T11:29:08.172911+02:00" DoneDate="" DeadlineDate="" />
     <Task Id="7" Title="dgdf" CategoryId="4" IsDone="False" CreatedDate="2022-05-16T20:52:10.5070758+02:00" DoneDate="" DeadlineDate="5/18/2022 8:52:00 PM" />
   </Tasks>
   <Categories>

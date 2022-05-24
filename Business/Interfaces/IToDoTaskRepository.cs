@@ -8,7 +8,7 @@ namespace Business.Models
         ToDoTaskModel GetTask(int id);
         bool Create(ToDoTaskModel task);
         bool Delete(int id);
-        bool SetDoneStatus(int id, bool status);
+        bool ToggleDoneStatus(int id);
         bool Update(ToDoTaskModel task);
 
     }

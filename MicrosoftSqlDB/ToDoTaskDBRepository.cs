@@ -39,7 +39,7 @@ namespace MicrosoftSqlDB.Models
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = categoryId };
-                string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
+                var sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
                     "Tasks.DoneDate FROM Tasks " +
                     "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
@@ -54,7 +54,7 @@ namespace MicrosoftSqlDB.Models
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = categoryId };
-                string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
+                var sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name AS Category, " +
                     "Tasks.CreatedDate, Tasks.DeadlineDate, Tasks.IsDone, " +
                     "Tasks.DoneDate FROM Tasks " +
                     "INNER JOIN Categories ON Tasks.CategoryId=Categories.Id " +
@@ -96,14 +96,19 @@ namespace MicrosoftSqlDB.Models
             return affectedRows > 0;
         }
 
-        public bool SetDoneStatus(int id, bool status)
+        public bool ToggleDoneStatus(int id)
         {
             var affectedRows = 0;
             using (var conn = new SqlConnection(connectionString))
             {
-                var parameters = new { Id = id, Status = status };
-                string sqlQuery = $"UPDATE Tasks SET IsDone = @Status, DoneDate = '{DateTime.Now}' WHERE Id = @Id";
-                affectedRows = conn.Execute(sqlQuery, parameters);
+                var selectPparameters = new { Id = id};
+                var sqlQuery = "SELECT IsDone FROM Tasks WHERE Id = @Id";
+                var isDoneCurrent = conn.QueryFirst<ToDoTaskModel>(sqlQuery, selectPparameters).IsDone;
+
+                var updateParameters = new { Id = id, Status = !isDoneCurrent };
+                var doneDate = isDoneCurrent ? "" : DateTime.Now.ToString();
+                sqlQuery = $"UPDATE Tasks SET IsDone = @Status, DoneDate = '{doneDate}' WHERE Id = @Id";
+                affectedRows = conn.Execute(sqlQuery, updateParameters);
             }
             return affectedRows > 0;
         }
@@ -113,7 +118,7 @@ namespace MicrosoftSqlDB.Models
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
-                string sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name as Category," +
+                var sqlQuery = "SELECT Tasks.Id, Tasks.Title, Tasks.CategoryId, Categories.Name as Category," +
                     " Tasks.CreatedDate, Tasks.IsDone, Tasks.DeadlineDate, Tasks.DoneDate FROM Tasks" +
                     " LEFT JOIN Categories ON Tasks.CategoryId = Categories.Id WHERE Tasks.Id = @Id";
                 ToDoTaskModel res = conn.QueryFirst<ToDoTaskModel>(sqlQuery, parameters);
@@ -132,7 +137,7 @@ namespace MicrosoftSqlDB.Models
                     DeadlineDate = task.DeadlineDate,
                     CategoryId = task.CategoryId
                 };
-                string sqlQuery = "UPDATE Tasks SET Title = @Title, CategoryId = @CategoryId," +
+                var sqlQuery = "UPDATE Tasks SET Title = @Title, CategoryId = @CategoryId," +
                     " DeadlineDate = @DeadlineDate WHERE Id = @Id";
                 affectedRows = conn.Execute(sqlQuery, parameters);
             }

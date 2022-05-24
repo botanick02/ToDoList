@@ -1,15 +1,18 @@
-﻿using Business.Models;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 
 namespace ToDoList.GraphQL.ToDoTasks.Inputs
 {
-    public class ToDoTaskCreateInputType : InputObjectGraphType<ToDoTaskCreateInput>
+    public class ToDoTaskUpdateInputType : InputObjectGraphType<ToDoTaskUpdateInput>
     {
-        public ToDoTaskCreateInputType()
+        public ToDoTaskUpdateInputType()
         {
+            Field<NonNullGraphType<IntGraphType>, int>()
+               .Name("Id")
+               .Resolve(context => context.Source.Id);
+
             Field<NonNullGraphType<StringGraphType>, string>()
-                .Name("Title")
-                .Resolve(context => context.Source.Title);
+               .Name("Title")
+               .Resolve(context => context.Source.Title);
 
             Field<NonNullGraphType<IntGraphType>, int>()
                     .Name("CategoryId")
@@ -19,6 +22,5 @@ namespace ToDoList.GraphQL.ToDoTasks.Inputs
                     .Name("DeadlineDate")
                     .Resolve(context => context.Source.DeadlineDate);
         }
-        
     }
 }

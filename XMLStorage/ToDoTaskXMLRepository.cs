@@ -135,7 +135,6 @@ namespace XMLStorage
                 new XAttribute("DeadlineDate", (string)c.Attribute("DeadlineDate"))
                 )
                 );
-            Debug.WriteLine(tasksXML);
             var task = tasksXML.Elements("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).Select(t => new ToDoTaskModel()
             {
                 Id = XmlConvert.ToInt32(t.Attribute("Id").Value),
@@ -172,11 +171,22 @@ namespace XMLStorage
             return true;
         }
 
-        public bool SetDoneStatus(int id, bool status)
+        public bool ToggleDoneStatus(int id)
         {
+            var isDoneCurent = bool.Parse(xmlDocument.Descendants("Task").Where(c => c.Attribute("Id").Value.Equals(id.ToString())).First().Attribute("IsDone").Value);
+
             var taskXml = xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).First();
-            taskXml.SetAttributeValue("IsDone", status.ToString());
-            taskXml.SetAttributeValue("DoneDate", DateTime.Now);
+            taskXml.SetAttributeValue("IsDone", (!isDoneCurent).ToString());
+            if (isDoneCurent)
+            {
+                taskXml.SetAttributeValue("DoneDate", "");
+            }
+            else
+            {
+                taskXml.SetAttributeValue("DoneDate", DateTime.Now);
+            }
+            
+
             xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).First()
                 .ReplaceWith(taskXml);
             xmlDocument.Save(xmlFilePath);

@@ -25,12 +25,6 @@ namespace ToDoList.Controllers
         [HttpGet]
         public ViewResult Index(int? categoryId = null)
         {
-            //var schema = Schema.For(@"
-            //type Query {
-            //    hello: String;
-            //}
-            //");
-
             var viewModelPage = PrepareViewModelForIndex(categoryId);
             return View("Index", viewModelPage);
         }
@@ -55,20 +49,11 @@ namespace ToDoList.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult MarkAsDone(int id)
+        public IActionResult ToggleDoneStatus(int id)
         {
             if (ModelState.IsValid)
             {
-                bool res = taskRepository.SetDoneStatus(id, true);
-            }
-            return RedirectToAction("Index");
-        }
-        [HttpPost]
-        public IActionResult MarkAsNotDone(int id)
-        {
-            if (ModelState.IsValid)
-            {
-                bool res = taskRepository.SetDoneStatus(id, false);
+                bool res = taskRepository.ToggleDoneStatus(id);
             }
             return RedirectToAction("Index");
         }
@@ -107,12 +92,6 @@ namespace ToDoList.Controllers
             return RedirectToAction("Edit", task);
         }
 
-
-        public IActionResult ChangeCurrentSource(string source)
-        {
-            CurrentStorage.SetCurrentSource(source);
-            return RedirectToAction("Index");
-        }
 
         private TasksIndexViewModelPage PrepareViewModelForIndex(int? categoryId = null)
         {
