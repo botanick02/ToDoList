@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
+using ToDoList.sourceChanger.Enums;
 
 namespace ToDoList.sourceChanger
 {
     public static class CurrentStorage
     {
-        public static string CurrentSource = "Database";
-        public static void SetCurrentSource(string source)
+        public static StorageSources CurrentSource = StorageSources.Database;
+        public static bool SetCurrentSource(string source)
         {
-            CurrentSource = source;
+            return Enum.TryParse(source, out CurrentSource);
         }
     }
 }

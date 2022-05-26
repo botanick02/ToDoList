@@ -1,4 +1,5 @@
 ﻿using GraphQL.Types;
+using ToDoList.GraphQL.Storage;
 using ToDoList.GraphQL.ToDoTasks;
 
 namespace ToDoList.GraphQL
@@ -16,6 +17,9 @@ namespace ToDoList.GraphQL
                .Name("Categories")
                .Resolve(_ => new { });
 
+            Field<StorageMutations>()
+               .Name("Storage")
+               .Resolve(_ => new { });
         }
     }
 }

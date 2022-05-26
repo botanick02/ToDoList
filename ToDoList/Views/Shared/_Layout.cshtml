@@ -27,7 +27,7 @@
 			<select name="Source">
 				@foreach(string source in Enum.GetNames(typeof(StorageSources)))
 				{
-					<option @(currentSource == source ? "selected" : "") value="@(source)">@(source)</option>
+					<option @(Enum.GetName(currentSource) == source ? "selected" : "") value="@(source)">@(source)</option>
 				}
 			</select>
 			<input type="hidden" name="controller" value="@(ViewContext.RouteData.Values["controller"])"/>

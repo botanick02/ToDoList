@@ -1,12 +1,9 @@
 using AutoMapper;
-using MicrosoftSqlDB.Models;
-using XMLStorage;
 using ToDoList;
 using ToDoList.GraphQL;
 using GraphQL.Server;
 using GraphQL.SystemTextJson;
 using GraphQL;
-using ToDoList.sourceChanger.Enums;
 using ToDoList.sourceChanger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,10 +20,10 @@ builder.Services.AddSingleton<IMapper>(mapper);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<DoToListSchema>();
+builder.Services.AddTransient<ToDoListSchema>();
 builder.Services.AddGraphQL()
                 .AddSystemTextJson()
-                .AddGraphTypes(typeof(DoToListSchema));
+                .AddGraphTypes(typeof(ToDoListSchema), serviceLifetime: ServiceLifetime.Transient);
 
 builder.Services.AddProviderService();
 
@@ -44,7 +41,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseGraphQL<DoToListSchema>();
+app.UseGraphQL<ToDoListSchema>();
 app.UseGraphQLAltair();
 
 app.UseAuthorization();

@@ -14,14 +14,8 @@ namespace ToDoList.sourceChanger
             services.AddTransient<CategoryXMLRepository>();
 
             services.AddTransient<CategoryRepositoryResolver>(CategoryRepositoryProvider => key =>
-            {
-                StorageSources source;
-                if (!Enum.TryParse(key, out source))
-                {
-                    source = StorageSources.Database;
-                }
-
-                switch (source)
+            { 
+                switch (key)
                 {
                     case StorageSources.Database:
                         return CategoryRepositoryProvider.GetService<CategoryDBRepository>();
@@ -33,13 +27,7 @@ namespace ToDoList.sourceChanger
             });
             services.AddTransient<ToDoTaskRepositoryResolver>(ToDoTaskRepositoryProvider => key =>
             {
-                StorageSources source;
-                if (!Enum.TryParse(key, out source))
-                {
-                    source = StorageSources.Database;
-                }
-
-                switch (source)
+                switch (key)
                 {
                     case StorageSources.Database:
                         return ToDoTaskRepositoryProvider.GetService<ToDoTaskDBRepository>();
