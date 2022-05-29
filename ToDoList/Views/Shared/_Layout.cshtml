@@ -30,9 +30,9 @@
 					<option @(Enum.GetName(currentSource) == source ? "selected" : "") value="@(source)">@(source)</option>
 				}
 			</select>
-			<input type="hidden" name="controller" value="@(ViewContext.RouteData.Values["controller"])"/>
-			<input type="hidden" name="action" value="@(ViewContext.RouteData.Values["action"])"/>
-			<input type="submit" value="Choose" />
+				<input type="hidden" name="controller" value="@(ViewContext.RouteData.Values["controller"])"/>
+				<input type="hidden" name="action" value="@(ViewContext.RouteData.Values["action"])"/>
+				<input type="submit" value="Choose" />
 			</form>
 	</header>
 	<div class="container">

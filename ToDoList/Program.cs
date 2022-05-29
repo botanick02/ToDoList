@@ -24,7 +24,7 @@ builder.Services.AddTransient<ToDoListSchema>();
 builder.Services.AddGraphQL()
                 .AddSystemTextJson()
                 .AddGraphTypes(typeof(ToDoListSchema), serviceLifetime: ServiceLifetime.Transient);
-
+                                                                                
 builder.Services.AddProviderService();
 
 var app = builder.Build();
