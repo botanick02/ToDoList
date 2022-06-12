@@ -3,15 +3,15 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = [
     {
-        id: '1',
+        id: 1,
         name: 'Uncategorized'
     },
     {
-        id: '2',
+        id: 2,
         name: 'Work'
     },
     {
-        id: '3',
+        id: 3,
         name: 'School'
     }
 ]
@@ -19,7 +19,24 @@ const initialState = [
 const categoriesSlice = createSlice({
     name: 'categories',
     initialState,
-    reducers: {}
+    reducers: {
+        categoryAdded(state, action){
+            state.push(action.payload);
+        },
+        categoryUpdated(state, action){
+            const {id, name} = action.payload;
+            let existingCategory = state.find(category => category.id === +id);
+            console.log(existingCategory);
+            if(existingCategory){
+                existingCategory.name = name;
+            }
+        },
+        categoryDeleted(state, action){
+            const {id} = action.payload;
+            return state.filter(category => category.id !== +id);
+        }
+    }
 })
+export const {categoryAdded, categoryDeleted, categoryUpdated} = categoriesSlice.actions;
 
-export default categoriesSlice.reducer
+export default categoriesSlice.reducer;

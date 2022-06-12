@@ -1,96 +1,62 @@
 import {createSlice} from '@reduxjs/toolkit'
+import DateTimeToString from "../../Convertors/DateTimeToString";
 
 
-const initialState = {
-    completed: [
-        {
-            id: "1",
-            title: "Do something",
-            categoryId: '2',
-            category: "Work",
-            createdDate: "05-05-2022 12:40:00",
-            deadlineDate: "5-29-2022 12:40:00",
-            isDone: false,
-            doneDate: "05-29-2022 12:40:00"
-        },
-        {
-            id: "2",
-            title: "Do something 2",
-            categoryId: '1',
-            category: "Uncategorized",
-            createdDate: "10-05-2022 12:40:00",
-            deadlineDate: "5-30-2022 12:40:00",
-            isDone: false,
-            doneDate: "05-25-2022 09:40:00"
-        },
-        {
-            id: "3",
-            title: "Do something 3",
-            categoryId: '3',
-            category: "School",
-            createdDate: "09-05-2022 12:40:00",
-            deadlineDate: "5-29-2022 17:40:00",
-            isDone: false,
-            doneDate: "05-25-2022 12:41:00"
-        },
-        {
-            id: "4",
-            title: "Do something 5",
-            categoryId: '3',
-            category: "School",
-            createdDate: "09-05-2022 12:40:00",
-            deadlineDate: "",
-            isDone: false,
-            doneDate: "05-25-2022 12:40:00"
-        },
-    ],
-    current: [{
-        id: "5",
+const initialState = [
+    {
+        id: 1,
         title: "Do something",
-        categoryId: '2',
-        category: "Work",
-        createdDate: "05-05-2022 12:40:00",
-        deadlineDate: "5-29-2022 12:40:00",
-        isDone: true,
+        categoryId: 2,
+        createdDate: "2022-06-01T13:53",
+        deadlineDate: "2022-06-23T13:53",
+        isDone: false,
         doneDate: ""
     },
-        {
-            id: "6",
-            title: "Do something 2",
-            categoryId: '1',
-            category: "Uncategorized",
-            createdDate: "10-05-2022 12:40:00",
-            deadlineDate: "5-30-2022 12:40:00",
-            isDone: true,
-            doneDate: ""
-        },
-        {
-            id: "7",
-            title: "Do something 3",
-            categoryId: '3',
-            category: "School",
-            createdDate: "09-05-2022 12:40:00",
-            deadlineDate: "5-29-2022 17:40:00",
-            isDone: true,
-            doneDate: ""
-        },
-        {
-            id: "8",
-            title: "Do something 4",
-            categoryId: '3',
-            category: "School",
-            createdDate: "09-05-2022 12:40:00",
-            deadlineDate: "",
-            isDone: true,
-            doneDate: ""
-        },
-    ]
-}
+    {
+        id: 8,
+        title: "Do something 4",
+        categoryId: 3,
+        createdDate: "2022-06-04T13:53",
+        deadlineDate: "",
+        isDone: true,
+        doneDate: "2022-06-04T13:56"
+    },
+]
 
 const toDoTasksSlice = createSlice({
     name: 'toDoTasks',
     initialState,
-    reducers: {}
+    reducers: {
+        taskAdded(state, action) {
+            state.push(action.payload);
+        },
+        taskUpdated(state, action) {
+            const {id, title, categoryId, deadlineDate} = action.payload;
+            let existingTask = state.find(task => task.id === +id);
+            if (existingTask) {
+                existingTask.title = title;
+                existingTask.categoryId = categoryId;
+                existingTask.deadlineDate = deadlineDate;
+            }
+        },
+        isDoneSwitched(state, action) {
+            const {id} = action.payload;
+            let existingTask = state.find(task => task.id === id);
+            if (existingTask) {
+                existingTask.isDone = !existingTask.isDone;
+                if(existingTask.isDone){
+                    existingTask.doneDate = DateTimeToString(new Date());
+                }else{
+                    existingTask.doneDate = "";
+                }
+            }
+        },
+        taskDeleted(state, action) {
+            const {id} = action.payload;
+            return state.filter(task => task.id !== id);
+        }
+    }
 })
+export const {taskAdded, taskUpdated, isDoneSwitched, taskDeleted} = toDoTasksSlice.actions;
 
 export default toDoTasksSlice.reducer

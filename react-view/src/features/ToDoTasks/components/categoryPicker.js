@@ -7,12 +7,14 @@ export function CategoryPicker(props) {
     const renderedOptions = categories.map(category => (
         <option key={category.id} value={category.id}>{category.name}</option>
     ));
-    function handleCategoryInput(event){
+
+    function handleCategoryInput(event) {
         setCategoryId(event.target.value);
     }
+
     return (
-        <div className="categoryFilter">
-            <form >
+        <div className={"category-filter"}>
+            <form>
                 <select name="categoryId" id="categoryId" value={categoryId} onChange={handleCategoryInput}>
                     <option value="">All</option>
                     {renderedOptions}

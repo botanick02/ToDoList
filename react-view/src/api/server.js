@@ -1,22 +1,20 @@
-import { factory, manyOf, primaryKey } from '@mswjs/data'
-import { nanoid } from '@reduxjs/toolkit'
+import {factory, manyOf} from '@mswjs/data'
 
 
 export const db = factory({
-   toDoTasks : manyOf('toDoTask'),
+    toDoTasks: manyOf('toDoTask'),
     toDoTask: {
-        id: primaryKey(nanoid),
+        id: Number,
         title: String,
-        categoryId: Int16Array,
-        category: String,
+        categoryId: Number,
         createdDate: String,
         deadlineDate: String,
         isDone: Boolean,
         doneDate: String
     },
-    categories : manyOf('category'),
+    categories: manyOf('category'),
     category: {
-        id: primaryKey(nanoid),
+        id: Number,
         name: String
     }
 })
