@@ -26,7 +26,6 @@ const categoriesSlice = createSlice({
         categoryUpdated(state, action){
             const {id, name} = action.payload;
             let existingCategory = state.find(category => category.id === +id);
-            console.log(existingCategory);
             if(existingCategory){
                 existingCategory.name = name;
             }

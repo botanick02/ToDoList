@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom'
+import StoragePicker from "../StorageSource/StoragePicker";
 
 export default function Navbar() {
     return (
@@ -10,6 +11,8 @@ export default function Navbar() {
                     <Link to={"/categories"}>Categories</Link>
                 </li>
             </ul>
+            <StoragePicker/>
+
         </div>
     )
 }

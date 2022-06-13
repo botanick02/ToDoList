@@ -208,19 +208,6 @@ h4 {
     background-color: #fff;
 }
 
-.category-filter input[type="submit"] {
-    color: #152D35;
-    font-size: 1.1vw;
-    background-color: #fff;
-    border: 1px solid #152D35;
-    height: 100%;
-    padding: 0 10px;
-}
-
-.category-filter input[type="submit"]:hover {
-    background-color: #B6D6E7;
-}
-
 .add-task {
     width: 100%;
     text-align: center;
@@ -436,10 +423,21 @@ a {
 .navigation {
     display: flex;
     margin-left: 50px;
+    width: 100%;
 }
 
 .navigation li {
     list-style: none;
+}
+.storage-picker {
+    margin: 0 30px;
+    font-family: 'Ubuntu', sans-serif;
+    display: flex;
+}
+
+.storage-picker select {
+    padding: 7px;
+    background-color: #fff;
 }
 
 .navigation li a {

@@ -45,7 +45,12 @@ export function ToDoTasksTable(props) {
                 <th></th>
             </tr>
             </thead>
-            {renderedToDoTasks}
+            {renderedToDoTasks.length > 0 ? renderedToDoTasks :
+                <thead>
+                    <tr>
+                        <td colSpan="5">Nothing here</td>
+                    </tr>
+                </thead>}
         </table>
     )
 }
