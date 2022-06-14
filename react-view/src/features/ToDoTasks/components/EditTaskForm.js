@@ -14,7 +14,7 @@ export default function EditTaskForm(props) {
 
 
     if (!task) {
-        return (<h2>Task not found!</h2>)
+        return (<h2 className={"page_not_found"}>Task not found! :(</h2>)
     }
 
     const [title, setTitle] = useState(task.title);

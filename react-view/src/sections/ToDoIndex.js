@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {ToDoTasksTable} from '../features/ToDoTasks/components/ToDoTasksTable'
 import {AddTaskForm} from '../features/ToDoTasks/components/AddTaskForm'
-import {CategoryPicker} from '../features/ToDoTasks/components/categoryPicker'
+import {CategoryFilterPicker} from '../features/ToDoTasks/components/CategoryFilterPicker'
 
 export default function ToDoIndex() {
     const [categoryId, setCategoryId] = useState('');
@@ -9,7 +9,7 @@ export default function ToDoIndex() {
     return (
         <>
             <AddTaskForm/>
-            <CategoryPicker category={categoryId} setCategoryId={setCategoryId}/>
+            <CategoryFilterPicker category={categoryId} setCategoryId={setCategoryId}/>
             <div className={"tasks-wrapper"}>
                 <div className={"current-tasks"}>
                     <h3>Current</h3>

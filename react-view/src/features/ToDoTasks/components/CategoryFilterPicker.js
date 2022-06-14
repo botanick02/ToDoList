@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 
-export function CategoryPicker(props) {
+export function CategoryFilterPicker(props) {
     const {setCategoryId, categoryId} = props;
     const categories = useSelector(state => state.categories)
     const renderedOptions = categories.map(category => (
@@ -14,6 +14,7 @@ export function CategoryPicker(props) {
 
     return (
         <div className={"category-filter"}>
+            Filter:
             <form>
                 <select name="categoryId" id="categoryId" value={categoryId} onChange={handleCategoryInput}>
                     <option value="">All</option>

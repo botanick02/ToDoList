@@ -63,7 +63,7 @@ export function AddTaskForm() {
                     <p>Deadline (empty - no deadline)</p>
                     <input type="datetime-local" value={deadlineDate} onChange={onDeadlineChanged}/>
                 </label>
-                <button className={"submit-button"} type="button" onClick={onAddTaskClicked}>Save</button>
+                <button className={"submit-button"} type="button" onClick={onAddTaskClicked}>Add</button>
             </form>
         </div>
     )

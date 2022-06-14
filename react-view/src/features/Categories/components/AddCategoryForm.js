@@ -28,7 +28,7 @@ export default function AddCategoryForm() {
                     Name:
                     <input type={"text"} value={name} onChange={onNameChanged}/>
                 </label>
-                <button className={"submit-button"} type="button" onClick={onAddCategoryClicked}>Save</button>
+                <button className={"submit-button"} type="button" onClick={onAddCategoryClicked}>Add</button>
             </form>
         </div>
     )
