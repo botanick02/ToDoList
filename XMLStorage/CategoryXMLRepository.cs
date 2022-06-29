@@ -1,5 +1,6 @@
 ﻿using Business.Models;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -27,24 +28,25 @@ namespace XMLStorage
                 .ToList();
             return tasks;
         }
-        public bool Create(CategoryModel category)
+        public CategoryModel Create(CategoryModel category)
         {
             var count = xmlDocument.Descendants("Category").Count();
+            var newId = count + 1;
             xmlDocument.Root.Element("Categories").Add(
                 new XElement("Category",
-                new XAttribute("Id", count + 1),
+                new XAttribute("Id", newId),
                 new XAttribute("Name", category.Name)
                 ));
             xmlDocument.Save(xmlFilePath);
 
-            return true;
+            return GetCategory(newId);
         }
 
         public bool Delete(int id)
         {
             xmlDocument.Descendants("Category").Where(c => c.Attribute("Id").Value.Equals(id.ToString())).Remove();
             xmlDocument.Save(xmlFilePath);
-
+            setTasksCategoryToDefault(id);
             return true;
         }
 
@@ -59,12 +61,26 @@ namespace XMLStorage
             return category;
         }
 
-        public bool Update(CategoryModel category)
+        public CategoryModel Update(CategoryModel category)
         {
             xmlDocument.Descendants("Category").Where(c => c.Attribute("Id").Value.Equals(category.Id.ToString())).FirstOrDefault()
                 .SetAttributeValue("Name", category.Name);
             xmlDocument.Save(xmlFilePath);
-            return true;
+            return GetCategory(category.Id);
+        }
+
+        private void setTasksCategoryToDefault(int categoryId)
+        {
+            var tasksElem = xmlDocument.Root.Element("Tasks");
+            var tasks = tasksElem.Elements("Task").Where(task => task.Attribute("CategoryId").Value.Equals(categoryId.ToString())).ToList();
+            foreach (var task in tasks)
+            {
+                Debug.WriteLine(task);
+                task.SetAttributeValue("CategoryId", 1);
+            }
+            xmlDocument.Element("Root").Element("Tasks").ReplaceWith(tasksElem);
+            xmlDocument.Save(xmlFilePath);
+
         }
     }
 }

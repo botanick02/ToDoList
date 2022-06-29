@@ -8,7 +8,7 @@ namespace ToDoList.GraphQL.Storage
     {
         public StorageMutations()
         {
-            Field<NonNullGraphType<StringGraphType>>()
+            Field<StorageSourceType, StorageSourceModel>()
                .Name("SetSource")
                .Argument<NonNullGraphType<StringGraphType>, string>("Source", "Set source char")
                .Resolve(context =>
@@ -16,9 +16,11 @@ namespace ToDoList.GraphQL.Storage
                    var source = context.GetArgument<string>("Source");
                    if (CurrentStorage.SetCurrentSource(source))
                    {
-                       return source;
+                       var storage = new StorageSourceModel();
+                       storage.CurrentSource = source;
+                       return storage;
                    }
-                   return "Error: incorrect value";
+                   return null;
                });
         }
     }

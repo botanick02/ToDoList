@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using Business.Models;
 using Dapper;
@@ -67,9 +68,9 @@ namespace MicrosoftSqlDB.Models
         }
 
 
-        public bool Create(ToDoTaskModel task)
+        public ToDoTaskModel Create(ToDoTaskModel task)
         {
-            int affectedRows = 0;
+            ToDoTaskModel res = null;
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new
@@ -78,10 +79,15 @@ namespace MicrosoftSqlDB.Models
                     CategoryId = task.CategoryId,
                     DeadlineDate = task.DeadlineDate
                 };
-                string sqlQuery = $"INSERT INTO Tasks (Title, CategoryId, CreatedDate, DeadlineDate) VALUES(@Title, @CategoryId,  '{DateTime.Now}', @DeadlineDate)";
-                affectedRows = conn.Execute(sqlQuery, parameters);
+                string sqlQuery = $"INSERT INTO Tasks (Title, CategoryId, CreatedDate, DeadlineDate)" +
+                    $" VALUES(@Title, @CategoryId,  '{DateTime.Now}', @DeadlineDate); SELECT SCOPE_IDENTITY() AS [Id];";
+                var addedTask = conn.QueryFirst<ToDoTaskModel>(sqlQuery, parameters);
+                if (addedTask != null)
+                {
+                    res = GetTask(addedTask.Id);
+                }
             }
-            return affectedRows > 0;
+            return res;
         }
 
         public bool Delete(int id)
@@ -96,7 +102,7 @@ namespace MicrosoftSqlDB.Models
             return affectedRows > 0;
         }
 
-        public bool ToggleDoneStatus(int id)
+        public ToDoTaskModel ToggleDoneStatus(int id)
         {
             var affectedRows = 0;
             using (var conn = new SqlConnection(connectionString))
@@ -109,8 +115,12 @@ namespace MicrosoftSqlDB.Models
                 var doneDate = isDoneCurrent ? "" : DateTime.Now.ToString();
                 sqlQuery = $"UPDATE Tasks SET IsDone = @Status, DoneDate = '{doneDate}' WHERE Id = @Id";
                 affectedRows = conn.Execute(sqlQuery, updateParameters);
+                if(affectedRows > 0)
+                {
+                    return GetTask(id);
+                }
             }
-            return affectedRows > 0;
+            return null;
         }
 
         public ToDoTaskModel GetTask(int id)
@@ -125,9 +135,9 @@ namespace MicrosoftSqlDB.Models
                 return res;
             }
         }
-        public bool Update(ToDoTaskModel task)
+        public ToDoTaskModel Update(ToDoTaskModel task)
         {
-            var affectedRows = 0;
+            ToDoTaskModel res = null;
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new
@@ -139,9 +149,13 @@ namespace MicrosoftSqlDB.Models
                 };
                 var sqlQuery = "UPDATE Tasks SET Title = @Title, CategoryId = @CategoryId," +
                     " DeadlineDate = @DeadlineDate WHERE Id = @Id";
-                affectedRows = conn.Execute(sqlQuery, parameters);
+                var affectedRows = conn.Execute(sqlQuery, parameters);
+                if(affectedRows > 0)
+                {
+                    res = GetTask(task.Id);
+                }
             }
-            return affectedRows > 0;
+            return res;
         }
     }
 }

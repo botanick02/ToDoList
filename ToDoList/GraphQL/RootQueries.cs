@@ -1,6 +1,7 @@
 ﻿using Business.Models;
 using GraphQL;
 using GraphQL.Types;
+using ToDoList.GraphQL.Storage;
 using ToDoList.GraphQL.ToDoTasks;
 using ToDoList.sourceChanger;
 
@@ -19,7 +20,9 @@ namespace ToDoList.GraphQL
                 .Name("Categories")
                 .Resolve(_ => new { });
 
-           
+            Field<StorageQueries>()
+                 .Name("StorageSources")
+                 .Resolve(_ => new { });
         }
     }
 }

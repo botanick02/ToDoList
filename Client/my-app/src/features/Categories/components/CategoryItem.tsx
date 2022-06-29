@@ -1,7 +1,7 @@
 import React from "react";
 import {DeleteCategoryButton} from "./DeleteCategoryButton";
 import {Link} from "react-router-dom";
-import {Category} from "../CategoriesSlice";
+import {Category} from "../types/Category";
 
 interface CategoryItemProps{
     category: Category

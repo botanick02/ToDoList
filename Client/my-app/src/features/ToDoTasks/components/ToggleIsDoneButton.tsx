@@ -1,22 +1,20 @@
 import React from "react";
-import {isDoneSwitched} from "../ToDoTasksSlice";
-import {useAppDispatch } from '../../../app/hooks'
+import {useAppDispatch} from '../../../app/hooks'
+import {toggleIsDone} from "../ToDoTasksSlice";
 
-interface SwitchIsDoneButtonProps{
+interface SwitchIsDoneButtonProps {
     taskId: number,
     isDone: boolean
 }
 
-export const SwitchIsDoneButton = (props: SwitchIsDoneButtonProps) => {
+export const ToggleIsDoneButton = (props: SwitchIsDoneButtonProps) => {
     const dispatch = useAppDispatch();
 
     const onSwitchIsDoneClicked = () => {
-        if (props.taskId) {
+        if (props.taskId){
             dispatch(
-                isDoneSwitched({
-                    id: props.taskId
-                })
-            );
+                toggleIsDone({id: props.taskId})
+            )
         }
     }
     return (

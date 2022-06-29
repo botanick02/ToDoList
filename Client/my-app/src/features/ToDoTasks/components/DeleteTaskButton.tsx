@@ -1,5 +1,5 @@
 import React from "react";
-import {taskDeleted} from "../ToDoTasksSlice";
+import {deleteToDoTask, taskDeleted} from "../ToDoTasksSlice";
 import {useAppDispatch} from '../../../app/hooks';
 
 interface DeleteTaskButtonProps{
@@ -19,7 +19,7 @@ export const DeleteTaskButton = (props: DeleteTaskButtonProps) => {
     const onDeleteTaskClicked = () => {
         if (taskId) {
             dispatch(
-                taskDeleted({
+                deleteToDoTask({
                     id: taskId
                 })
             )

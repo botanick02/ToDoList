@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {taskUpdated} from "../ToDoTasksSlice";
+import {taskUpdated, updateToDoTask} from "../ToDoTasksSlice";
 import {useNavigate} from "react-router-dom"
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+import {ToDoTaskCreateInputType, ToDoTaskUpdateInputType} from "../../../GraphQl/ToDoTasks/mutations";
 
 
 interface EditTaskFormProps{
@@ -17,14 +18,14 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
     const taskId = props.taskId;
 
     const task = useAppSelector(state =>
-        state.toDoTasks.find(task => task.id === +taskId)
+        state.toDoTasks.currenTasks.find(task => task.id === +taskId)
     );
 
     const categories = useAppSelector(state => state.categories);
 
     const [title, setTitle] = useState(task?.title);
     const [categoryId, setCategoryId] = useState(task?.categoryId.toString());
-    const [deadlineDate, setDeadlineDate] = useState(task?.deadlineDate);
+    const [deadlineDate, setDeadlineDate] = useState(task?.deadlineDate ?? "");
 
     if (!task) {
         return (<h2 className={"page_not_found"}>Task not found! :(</h2>)
@@ -35,19 +36,20 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
     const onCategoryIdChanged = (e:  React.FormEvent<HTMLSelectElement>) => setCategoryId(e.currentTarget.value);
     const onDeadlineChanged = (e: React.FormEvent<HTMLInputElement>) => setDeadlineDate(e.currentTarget.value);
 
-    let categoriesCopy = [...categories];
+    let categoriesList = [...categories.categoriesList];
 
 
     const handleSubmit = (event: React.FormEvent) =>{
         event.preventDefault();
 
         if (title && categoryId) {
-            dispatch(taskUpdated({
-                id: taskId,
+            const task: ToDoTaskUpdateInputType = {
+                id: +taskId,
                 title,
-                categoryId,
-                deadlineDate
-            }))
+                categoryId: +categoryId,
+                deadlineDate: new Date(deadlineDate)
+            }
+            dispatch(updateToDoTask(task))
             navigate('/todo')
         }
     }
@@ -63,7 +65,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                 <label>
                     <p>Category</p>
                     <select value={categoryId} onChange={onCategoryIdChanged}>
-                        {categoriesCopy.map(category => (
+                        {categoriesList.map(category => (
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))}
                     </select>

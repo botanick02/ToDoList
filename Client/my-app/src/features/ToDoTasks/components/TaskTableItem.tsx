@@ -1,10 +1,10 @@
 import React from "react";
 import StringToFormattedDateTimeString from "../../../Services/Convertors/StringToFormattedDateTimeString";
-import {SwitchIsDoneButton} from "./SwitchIsDoneButton";
+import {ToggleIsDoneButton} from "./ToggleIsDoneButton";
 import {Link} from "react-router-dom";
 import {DeleteTaskButton} from "./DeleteTaskButton";
-import {ToDoTask} from "../ToDoTasksSlice";
 import {useAppSelector} from '../../../app/hooks'
+import {ToDoTask} from "../types/ToDoTask";
 
 
 interface TaskTableItemProps {
@@ -14,7 +14,7 @@ interface TaskTableItemProps {
 export const TaskTableItem = (props: TaskTableItemProps) => {
     const task = props.task;
     const category = useAppSelector(state =>
-        state.categories.find(category => category.id === +task.categoryId) ?? {name: "null"}).name;
+        state.categories.categoriesList.find(category => category.id === +task.categoryId) ?? {name: "null"}).name;
 
     interface deadlineExpirationsStatus {
         class: string,
@@ -57,7 +57,7 @@ export const TaskTableItem = (props: TaskTableItemProps) => {
             <td>{StringToFormattedDateTimeString(task.createdDate)}</td>
             <td>
                 <div className={"table-item-controls"}>
-                    <SwitchIsDoneButton taskId={task.id} isDone={task.isDone}/>
+                    <ToggleIsDoneButton taskId={task.id} isDone={task.isDone}/>
                     <Link to={`edit/${task.id}`} className={"edit-button"}>Edit</Link>
                     <DeleteTaskButton taskId={task.id}/>
                 </div>

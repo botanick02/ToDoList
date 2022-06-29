@@ -34,7 +34,7 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 var taskModel = mapper.Map<ToDoTaskModel>(task);
-                bool res = taskRepository.Create(taskModel);
+                var res = taskRepository.Create(taskModel);
             }
             var viewModelPage = PrepareViewModelForIndex();
             return View("Index", viewModelPage);
@@ -53,7 +53,7 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool res = taskRepository.ToggleDoneStatus(id);
+                var res = taskRepository.ToggleDoneStatus(id);
             }
             return RedirectToAction("Index");
         }
@@ -80,9 +80,8 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 var taskModel = mapper.Map<ToDoTaskModel>(task);
-                bool res = taskRepository.Update(taskModel);
-                Debug.WriteLine(res);
-                if (res)
+                var res = taskRepository.Update(taskModel);
+                if (res != null)
                 {
                     return RedirectToAction("Index");
                 }

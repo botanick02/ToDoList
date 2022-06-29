@@ -20,38 +20,30 @@ namespace ToDoList.GraphQL.ToDoTasks
 
             Field<CategoryType, CategoryModel>()
                .Name("Create")
-               .Argument<NonNullGraphType<CategoryCreateInputType>, CategoryCreateInput>("Category", "Arguments to create category")
+               .Argument<NonNullGraphType<CategoryCreateInputType>, CategoryCreateInput>("CategoryCreateInputType", "Arguments to create category")
                .Resolve(context =>
                {
-                   var categoryCreateInput = context.GetArgument<CategoryCreateInput>("Category");
+                   var categoryCreateInput = context.GetArgument<CategoryCreateInput>("CategoryCreateInputType");
                    var categoryModel = mapper.Map<CategoryModel>(categoryCreateInput);
                    var res = categoryRepository.Create(categoryModel);
-                   if (res)
-                   {
-                       return categoryModel;
-                   }
-                   return null;
+                   return res;
                });
 
 
             Field<CategoryType, CategoryModel>()
                .Name("Update")
-               .Argument<NonNullGraphType<CategoryUpdateInputType>, CategoryUpdateInput>("Category", "Arguments to update category")
+               .Argument<NonNullGraphType<CategoryUpdateInputType>, CategoryUpdateInput>("CategoryUpdateInputType", "Arguments to update category")
                .Resolve(context =>
                {
-                   var categoryUpdateInput = context.GetArgument<CategoryUpdateInput>("Category");
+                   var categoryUpdateInput = context.GetArgument<CategoryUpdateInput>("CategoryUpdateInputType");
                    var categoryModel = mapper.Map<CategoryModel>(categoryUpdateInput);
                    var res = categoryRepository.Update(categoryModel);
-                   if (res)
-                   {
-                       return categoryModel;
-                   }
-                   return null;
+                   return res;
                });
 
             Field<CategoryType, CategoryModel>()
                .Name("Delete")
-               .Argument<NonNullGraphType<IntGraphType>,int>("Id", "Argument to delete category")
+               .Argument<NonNullGraphType<IntGraphType>, CategoryCreateInput>("Id", "Argument to delete category")
                .Resolve(context =>
                {
                    var id = context.GetArgument<int>("Id");

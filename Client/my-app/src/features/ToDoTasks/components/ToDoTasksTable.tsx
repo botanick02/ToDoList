@@ -1,46 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {TaskTableItem} from "./TaskTableItem";
 import {useAppSelector} from '../../../app/hooks'
-import {ToDoTask} from "../ToDoTasksSlice";
+import {ToDoTask} from "../types/ToDoTask";
+import {SortToDoTasks} from "../../../Services/Sorters/SortToDoTasks";
 
 interface ToDoTasksTableProps {
     isDone: boolean,
-    categoryId: string
 }
 
 export const ToDoTasksTable = (props: ToDoTasksTableProps) => {
-    const toDoTasks = useAppSelector(state => state.toDoTasks)
+    const allToDoTasks = useAppSelector(state => state.toDoTasks)
 
-    let toDoTasksFiltered = toDoTasks.filter(task => task.isDone === props.isDone);
+    let requiredToDoTasks = props.isDone ? [...allToDoTasks.completedTasks] : [...allToDoTasks.currenTasks];
 
-    let sortFunc;
-    if (props.isDone) {
-        sortFunc = (a: ToDoTask, b: ToDoTask) => {
-            let dateA = Date.parse(a.doneDate);
-            let dateB = Date.parse(b.doneDate);
-            return dateB - dateA;
-        }
-    } else {
-        sortFunc = (a: ToDoTask, b: ToDoTask) => {
-            if (a.deadlineDate === "") {
-                return 1
-            }
-            if (b.deadlineDate === "") {
-                return -1
-            }
-            let dateA = Date.parse(a.deadlineDate);
-            let dateB = Date.parse(b.deadlineDate);
-            return dateA - dateB;
-        }
-    }
+    SortToDoTasks(requiredToDoTasks, props.isDone);
 
-    if (props.categoryId) {
-        toDoTasksFiltered = toDoTasksFiltered.filter(task => task.categoryId === +props.categoryId);
-    }
-
-    toDoTasksFiltered.sort(sortFunc);
-
-    const renderedToDoTasks = toDoTasksFiltered.map(task => (
+    const renderedToDoTasks = requiredToDoTasks.map(task => (
         <TaskTableItem key={task.id} task={task}/>
     ))
 

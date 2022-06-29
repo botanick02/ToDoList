@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {taskAdded} from '../ToDoTasksSlice'
+import {addToDoTask, taskAdded} from '../ToDoTasksSlice'
 import DateTimeToString from "../../../Services/Convertors/DateTimeToString";
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+import {useAppSelector, useAppDispatch} from '../../../app/hooks'
+import {ToDoTaskCreateInputType} from "../../../GraphQl/ToDoTasks/mutations";
 
 
 export const AddTaskForm = () => {
@@ -12,28 +13,25 @@ export const AddTaskForm = () => {
 
     const dispatch = useAppDispatch();
 
-    const onTitleChanged = (e:  React.FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
-    const onCategoryIdChanged = (e:  React.FormEvent<HTMLSelectElement>) => setCategoryId(e.currentTarget.value);
+    const onTitleChanged = (e: React.FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
+    const onCategoryIdChanged = (e: React.FormEvent<HTMLSelectElement>) => setCategoryId(e.currentTarget.value);
     const onDeadlineChanged = (e: React.FormEvent<HTMLInputElement>) => setDeadlineDate(e.currentTarget.value);
 
-    let categoriesCopy = [...categories];
+    let categoriesList = [...categories.categoriesList];
 
-    const handleSubmit = (event: React.FormEvent) =>{
+    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
         if (title && categoryId) {
-            let currentDate = new Date();
+            const task: ToDoTaskCreateInputType = {
+                title,
+                categoryId: +categoryId,
+                deadlineDate: new Date(deadlineDate)
+            }
             dispatch(
-                taskAdded({
-                    id: Date.now(),
-                    title,
-                    categoryId: +categoryId,
-                    deadlineDate,
-                    isDone: false,
-                    createdDate: DateTimeToString(currentDate),
-                    doneDate: ''
-                })
+                addToDoTask(task)
             )
+
             setTitle('');
             setCategoryId('1');
             setDeadlineDate('');
@@ -51,7 +49,7 @@ export const AddTaskForm = () => {
                 <label>
                     <p>Category</p>
                     <select value={categoryId} onChange={onCategoryIdChanged}>
-                        {categoriesCopy.map(category => (
+                        {categoriesList.map(category => (
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))}
                     </select>

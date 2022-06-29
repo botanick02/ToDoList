@@ -16,10 +16,13 @@ namespace ToDoList.GraphQL.ToDoTasks
             Field<NonNullGraphType<ListGraphType<ToDoTaskType>>, List<ToDoTaskModel>>()
                 .Name("GetAll")
                 .Argument<BooleanGraphType, bool?>("IsDone", "Argument to get tasks")
+                .Argument<IntGraphType, int?>("CategoryId", "Argument to get tasks")
                 .Resolve(context =>
                 {
                     bool? isDone = context.GetArgument<bool?>("IsDone");
-                    return taskRepository.ListTasks(isDone);
+                    int? categoryId = context.GetArgument<int?>("CategoryId");
+
+                    return taskRepository.ListTasks(isDone, categoryId);
                 });
 
             Field<NonNullGraphType<ToDoTaskType>, ToDoTaskModel>()

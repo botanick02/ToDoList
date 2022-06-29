@@ -147,11 +147,11 @@ namespace XMLStorage
             return task;
         }
 
-        public bool Create(ToDoTaskModel task)
+        public ToDoTaskModel Create(ToDoTaskModel task)
         {
-            var count = xmlDocument.Descendants("Task").Count();
+            var newId = xmlDocument.Descendants("Task").Count() + 1;
             var newTask = new XElement("Task",
-                new XAttribute("Id", count + 1),
+                new XAttribute("Id", newId),
                 new XAttribute("Title", task.Title),
                 new XAttribute("CategoryId", task.CategoryId),
                 new XAttribute("IsDone", "False"),
@@ -161,7 +161,7 @@ namespace XMLStorage
                 );
             xmlDocument.Root.Element("Tasks").Add(newTask);
             xmlDocument.Save(xmlFilePath);
-            return true;
+            return GetTask(newId);
         }
 
         public bool Delete(int id)
@@ -171,7 +171,7 @@ namespace XMLStorage
             return true;
         }
 
-        public bool ToggleDoneStatus(int id)
+        public ToDoTaskModel ToggleDoneStatus(int id)
         {
             var isDoneCurent = bool.Parse(xmlDocument.Descendants("Task").Where(c => c.Attribute("Id").Value.Equals(id.ToString())).First().Attribute("IsDone").Value);
 
@@ -190,10 +190,10 @@ namespace XMLStorage
             xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(id.ToString())).First()
                 .ReplaceWith(taskXml);
             xmlDocument.Save(xmlFilePath);
-            return true;
+            return GetTask(id);
         }
 
-        public bool Update(ToDoTaskModel task)
+        public ToDoTaskModel Update(ToDoTaskModel task)
         {
             var taskXml = xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(task.Id.ToString())).First();
             taskXml.SetAttributeValue("Title", task.Title);
@@ -202,7 +202,7 @@ namespace XMLStorage
             xmlDocument.Descendants("Task").Where(t => t.Attribute("Id").Value.Equals(task.Id.ToString())).First()
                 .ReplaceWith(taskXml);
             xmlDocument.Save(xmlFilePath);
-            return true;
+            return GetTask(task.Id);
         }
 
     }

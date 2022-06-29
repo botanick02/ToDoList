@@ -40,7 +40,7 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 var categoryModel = mapper.Map<CategoryModel>(category);
-                bool res = categoryRepository.Create(categoryModel);
+                var res = categoryRepository.Create(categoryModel);
             }
             return RedirectToAction("Index");
         }
@@ -61,7 +61,7 @@ namespace ToDoList.Controllers
             {
                 var categoryModel = mapper.Map<CategoryModel>(category);
                 var res = categoryRepository.Update(categoryModel);
-                if (res)
+                if (res != null)
                 {
                     return RedirectToAction("Index");
                 }

@@ -6,10 +6,10 @@ namespace Business.Models
     {
         List<ToDoTaskModel> ListTasks(bool? isDone = null, int? categoryId = null);
         ToDoTaskModel GetTask(int id);
-        bool Create(ToDoTaskModel task);
+        ToDoTaskModel Create(ToDoTaskModel task);
         bool Delete(int id);
-        bool ToggleDoneStatus(int id);
-        bool Update(ToDoTaskModel task);
+        ToDoTaskModel ToggleDoneStatus(int id);
+        ToDoTaskModel Update(ToDoTaskModel task);
 
     }
 }

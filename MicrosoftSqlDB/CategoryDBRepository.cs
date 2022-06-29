@@ -43,28 +43,37 @@ namespace MicrosoftSqlDB.Models
             }
             return affectedRows > 0;
         }
-        public bool Create(CategoryModel category)
+        public CategoryModel Create(CategoryModel category)
         {
-            int affectedRows = 0;
+            CategoryModel res = null;
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Name = category.Name };
-                string sqlQuery = $"INSERT INTO Categories VALUES(@Name)";
-                affectedRows = conn.Execute(sqlQuery, parameters);
+                string sqlQuery = $"INSERT INTO Categories VALUES(@Name); SELECT SCOPE_IDENTITY() AS [Id];";
+                var addedCategory = conn.QueryFirst<CategoryModel>(sqlQuery, parameters);
+                if (addedCategory != null)
+                {
+                    res = GetCategory(addedCategory.Id);
+                }
             }
-            return affectedRows > 0;
+            return res;
         }
 
-        public bool Update(CategoryModel category)
+        public CategoryModel Update(CategoryModel category)
         {
+            CategoryModel res = null;
             int affectedRows = 0;
             using (var conn = new SqlConnection(connectionString))
             {
                 var parameters = new { Name = category.Name, Id = category.Id };
                 string sqlQuery = $"UPDATE Categories SET Name = @Name WHERE Id = @Id";
                 affectedRows = conn.Execute(sqlQuery, parameters);
+                if(affectedRows > 0)
+                {
+                    return GetCategory(category.Id);
+                }
             }
-            return affectedRows > 0;
+            return res;
         }
     }
 }

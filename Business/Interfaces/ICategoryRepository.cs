@@ -7,7 +7,7 @@ namespace Business.Models
         List<CategoryModel> GetAllCategories();
         CategoryModel GetCategory(int id);
         bool Delete(int id);
-        bool Create(CategoryModel category);
-        bool Update(CategoryModel category);
+        CategoryModel Create(CategoryModel category);
+        CategoryModel Update(CategoryModel category);
     }
 }

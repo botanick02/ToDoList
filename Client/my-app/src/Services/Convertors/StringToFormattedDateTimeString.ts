@@ -1,5 +1,8 @@
-export default function StringToFormattedDateTimeString(string: string): string {
-    let date = new Date(string);
+export default function StringToFormattedDateTimeString(inputDate: string | null): string {
+    if(!inputDate){
+        return "";
+    }
+    let date = new Date(inputDate);
     let stringDate = date.toLocaleString();
     return stringDate === 'Invalid Date' ? '' : stringDate;
 }

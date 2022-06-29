@@ -6,7 +6,7 @@ export const CategoriesList = () => {
     const categories = useAppSelector(state => state.categories);
 
 
-    const renderedCategories = categories.map(category => (
+    const renderedCategories = categories.categoriesList.map(category => (
         category.id !== 1 ? <CategoryItem key={category.id} category={category}/> : ""
     ))
     return (

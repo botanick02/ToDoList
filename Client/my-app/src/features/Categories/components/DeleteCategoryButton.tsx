@@ -1,7 +1,8 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {categoryDeleted} from "../CategoriesSlice";
+import {categoryDeleted, deleteCategory} from "../CategoriesSlice";
 import {useAppDispatch} from "../../../app/hooks";
+import {CategoryDeleteInputType} from "../../../GraphQl/Categories/mutations";
 
 interface DeleteCategoryButtonProps{
     categoryId: number
@@ -19,10 +20,12 @@ export const DeleteCategoryButton = (props: DeleteCategoryButtonProps) => {
 
     const onDeleteCategoryClicked = () => {
         if (categoryId) {
+            const category: CategoryDeleteInputType ={
+                id: categoryId
+            }
+
             dispatch(
-                categoryDeleted({
-                    id: categoryId
-                })
+                deleteCategory(category)
             )
         }
     }

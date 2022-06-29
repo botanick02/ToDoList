@@ -11,7 +11,7 @@ interface CategoryFilterPickerProps{
 export const CategoryFilterPicker = (props: CategoryFilterPickerProps) => {
     const {setCategoryId, categoryId} = props;
     const categories = useAppSelector(state => state.categories)
-    const renderedOptions = categories.map(category => (
+    const renderedOptions = categories.categoriesList.map(category => (
         <option key={category.id} value={category.id}>{category.name}</option>
     ));
 

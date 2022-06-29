@@ -1,6 +1,7 @@
 import React from "react";
-import {sourceChanged} from "./StorageSourcesSlice";
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import {changeSource, sourceChanged} from "./StorageSourcesSlice";
+import {useAppSelector, useAppDispatch} from '../../app/hooks'
+import {StorageSourceChangeInputType} from "../../GraphQl/StorageSource/mutations";
 
 
 export const StoragePicker = () => {
@@ -11,10 +12,12 @@ export const StoragePicker = () => {
 
 
     const onSourceChanged = (e: React.FormEvent<HTMLSelectElement>) => {
+        const StorageSourceChangeInput: StorageSourceChangeInputType = {
+            source: e.currentTarget.value
+        }
+
         dispatch(
-            sourceChanged({
-                source: e.currentTarget.value
-            })
+            changeSource(StorageSourceChangeInput)
         )
     }
 

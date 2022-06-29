@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Navbar} from './Layouts/Header/Navbar'
 import {
   Routes,
@@ -9,10 +9,15 @@ import {Categories} from './pages/Categories'
 import {EditTaskPage} from "./features/ToDoTasks/EditTaskPage";
 import {EditCategoryPage} from "./features/Categories/EditCategoryPage";
 import {PageNotFound} from "./pages/pageNotFound";
+import {useAppSelector} from "./app/hooks";
 
 
 function App() {
-  return (
+
+    const source = useAppSelector(state => state.storageSources.currentSource);
+    const [currentSource, setCurrentSource] = useState(source);
+
+    return (
       <div className="App">
         <Navbar/>
         <Routes>
