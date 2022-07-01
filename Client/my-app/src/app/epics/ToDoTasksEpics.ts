@@ -25,8 +25,8 @@ export const fetchToDoTasksEpic: Epic<ReturnType<typeof fetchToDoTasks>, any, Ro
                     variables: {isDone: true, categoryId: action.payload.categoryId}
                 }))
 
-                const completedTasksObservable = completedTasksRequestObservable.pipe(map(res => completedTasksAdded(res.data.toDoTasks.getAll)))
-                const currentTasksObservable = currentTasksRequestObservable.pipe(map(res => currentTasksAdded(res.data.toDoTasks.getAll)))
+                const completedTasksObservable = completedTasksRequestObservable.pipe(map(response => completedTasksAdded(response.data.toDoTasks.getAll)))
+                const currentTasksObservable = currentTasksRequestObservable.pipe(map(response => currentTasksAdded(response.data.toDoTasks.getAll)))
                 return merge(completedTasksObservable, currentTasksObservable);
 
             }
@@ -39,7 +39,7 @@ export const addToDoTaskEpic: Epic<ReturnType<typeof addToDoTask>, any, RootStat
         mergeMap(action => from(client.mutate({
                 mutation: CREATE_TODOTASK,
                 variables: {toDoTaskCreateInputType: action.payload}
-            })).pipe(map(res => taskAdded(res.data.toDoTasks.create)))
+            })).pipe(map(response => taskAdded(response.data.toDoTasks.create)))
         )
     )
 }
@@ -50,7 +50,7 @@ export const updateToDoTaskEpic: Epic<ReturnType<typeof addToDoTask>, any, RootS
         mergeMap(action => from(client.mutate({
                 mutation: UPDATE_TODOTASK,
                 variables: {toDoTaskUpdateInputType: action.payload}
-            })).pipe(map(res => taskUpdated(res.data.toDoTasks.update)))
+            })).pipe(map(response => taskUpdated(response.data.toDoTasks.update)))
         )
     )
 }
@@ -61,7 +61,7 @@ export const toggleIsDoneEpic: Epic<ReturnType<typeof toggleIsDone>, any, RootSt
         mergeMap(action => from(client.mutate({
                 mutation: TOGGLE_IS_DONE,
                 variables: {id: action.payload.id}
-            })).pipe(map(res => isDoneToggled(res.data.toDoTasks.toggleDoneStatus)))
+            })).pipe(map(response => isDoneToggled(response.data.toDoTasks.toggleDoneStatus)))
         )
     )
 }
@@ -72,7 +72,7 @@ export const deleteToDoTaskEpic: Epic<ReturnType<typeof deleteToDoTask>, any, Ro
         mergeMap(action => from(client.mutate({
             mutation: DELETE_TODOTASK,
             variables: {id: action.payload.id}
-        })).pipe(map(res => taskDeleted(res.data.toDoTasks.delete))))
+        })).pipe(map(response => taskDeleted(response.data.toDoTasks.delete))))
     )
 }
 

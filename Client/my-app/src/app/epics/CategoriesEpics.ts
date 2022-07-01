@@ -19,7 +19,7 @@ export const fetchCategoriesEpic: Epic<ReturnType<typeof fetchCategories>, any, 
             from(client.query({
                     query: GET_CATEGORIES
                 }
-            )).pipe(map(res => categoriesAdded(res.data.categories.getAll)))
+            )).pipe(map(response => categoriesAdded(response.data.categories.getAll)))
         )
     )
 }
@@ -30,7 +30,7 @@ export const createCategoryEpic:  Epic<ReturnType<typeof createCategory>, any, R
         mergeMap( action => from(client.mutate({
             mutation: CREATE_CATEGORY,
             variables: {categoryCreateInputType: action.payload}
-        })).pipe(map(res => categoryCreated(res.data.categories.create))))
+        })).pipe(map(response => categoryCreated(response.data.categories.create))))
     )
 }
 
@@ -40,7 +40,7 @@ export const updateCategoryEpic:  Epic<ReturnType<typeof updateCategory>, any, R
         mergeMap( action => from(client.mutate({
             mutation: UPDATE_CATEGORY,
             variables: {categoryUpdateInputType: action.payload}
-        })).pipe(map(res => categoryUpdated(res.data.categories.update))))
+        })).pipe(map(response => categoryUpdated(response.data.categories.update))))
     )
 }
 
@@ -50,7 +50,7 @@ export const deleteCategoryEpic:  Epic<ReturnType<typeof deleteCategory>, any, R
         mergeMap( action => from(client.mutate({
             mutation: DELETE_CATEGORY,
             variables: {id: action.payload.id}
-        })).pipe(map(res => categoryDeleted(res.data.categories.delete))))
+        })).pipe(map(response => categoryDeleted(response.data.categories.delete))))
     )
 }
 

@@ -30,8 +30,17 @@ namespace XMLStorage
         }
         public CategoryModel Create(CategoryModel category)
         {
-            var count = xmlDocument.Descendants("Category").Count();
-            var newId = count + 1;
+
+            var categories = xmlDocument.Descendants("Category");
+            var newId = 0;
+            foreach (var c in categories)
+            {
+                if (int.Parse(c.Attribute("Id").Value) >= newId)
+                {
+                    newId = int.Parse(c.Attribute("Id").Value) + 1;
+                }
+            }
+
             xmlDocument.Root.Element("Categories").Add(
                 new XElement("Category",
                 new XAttribute("Id", newId),

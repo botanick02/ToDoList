@@ -149,7 +149,18 @@ namespace XMLStorage
 
         public ToDoTaskModel Create(ToDoTaskModel task)
         {
-            var newId = xmlDocument.Descendants("Task").Count() + 1;
+            
+            var tasks = xmlDocument.Descendants("Task");
+            var newId = 0;
+            foreach (var t in tasks)
+            {
+                if(int.Parse(t.Attribute("Id").Value) >= newId)
+                {
+                    newId = int.Parse(t.Attribute("Id").Value) + 1;
+                }
+            }
+
+
             var newTask = new XElement("Task",
                 new XAttribute("Id", newId),
                 new XAttribute("Title", task.Title),

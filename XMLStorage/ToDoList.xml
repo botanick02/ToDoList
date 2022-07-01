@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
   <Tasks>
-    <Task Id="1" Title="Do something" CategoryId="3" CreatedDate="05-05-2022 12:40:00" DeadlineDate="" IsDone="True" DoneDate="2022-05-16T20:52:15.3168896+02:00" />
+    <Task Id="1" Title="Do something" CategoryId="1" CreatedDate="05-05-2022 12:40:00" DeadlineDate="" IsDone="True" DoneDate="2022-05-16T20:52:15.3168896+02:00" />
     <Task Id="2" Title="Do something 3d" CategoryId="1" CreatedDate="05-05-2022 12:40:00" IsDone="True" DoneDate="05-05-2022 12:40:00" DeadlineDate="" />
     <Task Id="3" Title="Do math" CategoryId="1" IsDone="True" CreatedDate="2022-05-10T11:20:40.6535499+02:00" DoneDate="2022-05-10T11:21:16.9798334+02:00" DeadlineDate="5/11/2022 8:00:00 PM" />
     <Task Id="4" Title="no deadline" CategoryId="1" IsDone="False" CreatedDate="2022-05-10T11:29:08.172911+02:00" DoneDate="" DeadlineDate="" />
     <Task Id="5" Title="dgdf" CategoryId="1" IsDone="False" CreatedDate="2022-05-16T20:52:10.5070758+02:00" DoneDate="" DeadlineDate="5/18/2022 8:52:00 PM" />
-    <Task Id="6" Title="dof" CategoryId="1" IsDone="False" CreatedDate="2022-06-29T15:11:37.8223915+02:00" DoneDate="" DeadlineDate="" />
+    <Task Id="8" Title="bew task" CategoryId="1" IsDone="False" CreatedDate="2022-07-01T16:42:17.1821022+02:00" DoneDate="" DeadlineDate="" />
+    <Task Id="9" Title="new task" CategoryId="1" IsDone="False" CreatedDate="2022-07-01T16:46:36.842532+02:00" DoneDate="" DeadlineDate="" />
+    <Task Id="10" Title="new new task" CategoryId="1" IsDone="False" CreatedDate="2022-07-01T16:46:49.6628775+02:00" DoneDate="" DeadlineDate="" />
   </Tasks>
   <Categories>
     <Category Id="1" Name="Uncategorized" />
     <Category Id="2" Name="family" />
-    <Category Id="3" Name="work" />
   </Categories>
 </Root>

@@ -19,7 +19,7 @@ export const changeStorageSourceEpic: Epic<ReturnType<typeof changeSource>, any,
                 mutation: CHANGE_SOURCE,
                 variables: {source: action.payload.source}
             }
-        )).pipe(map(res => sourceChanged(res.data.storage.setSource))))
+        )).pipe(map(response => sourceChanged(response.data.storage.setSource))))
     )
 }
 
